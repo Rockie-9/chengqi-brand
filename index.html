@@ -9,6 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   :root {
     --ink: #1B1612;
     --ink-deep: #0E0B09;
@@ -25,6 +29,99 @@
     --line-strong: rgba(237, 228, 211, 0.22);
     --dim: rgba(237, 228, 211, 0.55);
     --dimmer: rgba(237, 228, 211, 0.35);
+    /* Spacing scale — multiples of 4 for visual rhythm */
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+    --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+    --s-12: 48px; --s-16: 64px; --s-18: 72px;
+    /* Unified breakpoints (reference only — used via @media) */
+    /* --bp-md: 900px; --bp-sm: 640px; */
+  }
+  :focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+  a:focus-visible { outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* COLLAPSIBLE — 編輯級 details/summary，用於降低資訊密度 */
+  details.collapsible {
+    margin-top: 24px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    transition: border-color 0.25s;
+  }
+  details.collapsible[open] { border-color: var(--line-strong); }
+  details.collapsible > summary {
+    cursor: pointer;
+    padding: 18px 24px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+    user-select: none;
+  }
+  details.collapsible > summary:hover { color: var(--linen); }
+  details.collapsible[open] > summary { color: var(--linen); border-bottom: 1px solid var(--line); }
+  details.collapsible > summary::-webkit-details-marker { display: none; }
+  details.collapsible > summary::marker { content: ''; }
+  details.collapsible > summary::after {
+    content: '+';
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--brass);
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.25s;
+  }
+  details.collapsible[open] > summary::after {
+    content: '−';
+    color: var(--dawn);
+  }
+  details.collapsible .collapsible-body {
+    padding: 24px;
+  }
+  details.collapsible .summary-tag {
+    flex: 1;
+    display: flex; align-items: center; gap: 12px;
+  }
+  details.collapsible .summary-tag .tag-hint {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 10px; color: var(--dimmer);
+    letter-spacing: 0.1em; text-transform: none;
+    font-weight: 400;
+  }
+  @media (max-width: 640px) {
+    details.collapsible > summary {
+      padding: 16px 18px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+    details.collapsible .collapsible-body { padding: 18px; }
+    details.collapsible .summary-tag .tag-hint { display: none; }
   }
   body {
     background: var(--ink);
@@ -36,6 +133,8 @@
     padding: 64px 32px;
     -webkit-font-smoothing: antialiased;
   }
+  @media (max-width: 900px) { body { padding: 48px 24px; } }
+  @media (max-width: 640px) { body { padding: 32px 16px; } }
   .container { max-width: 1320px; margin: 0 auto; }
 
   /* HERO */
@@ -49,19 +148,18 @@
   }
   .hero-kicker::before { content: ''; width: 32px; height: 1px; background: var(--brass); }
   .hero-main-grid { display: grid; grid-template-columns: 1.5fr 2fr; gap: 80px; align-items: center; }
-  @media (max-width: 960px) {
-    .hero-main-grid { grid-template-columns: 1fr; gap: 40px; }
-    body { padding: 32px 20px; }
+  @media (max-width: 900px) {
+    .hero-main-grid { grid-template-columns: 1fr; gap: 32px; }
   }
   .hero-chars { display: flex; align-items: flex-end; gap: 8px; line-height: 0.85; }
   .hero-char-1, .hero-char-2 {
     font-family: 'Noto Serif TC', serif;
-    font-size: clamp(140px, 18vw, 220px);
+    font-size: clamp(96px, 16vw, 220px);
     font-weight: 500; letter-spacing: -0.02em;
   }
   .hero-char-1 { color: var(--linen); }
   .hero-char-2 { color: var(--brass); }
-  .hero-char-bar { width: 4px; height: 60%; background: var(--madder); margin: 0 16px 20px; align-self: flex-end; }
+  .hero-char-bar { width: 4px; height: 60%; background: var(--madder); margin: 0 clamp(8px, 2vw, 16px) 20px; align-self: flex-end; }
   .hero-info h1 {
     font-family: 'Noto Serif TC', serif;
     font-size: clamp(28px, 3.5vw, 40px); font-weight: 500;
@@ -85,6 +183,14 @@
 
   /* SECTION */
   section { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  @media (max-width: 900px) {
+    section { padding: 36px 0; }
+    .hero { padding-bottom: 32px !important; margin-bottom: 32px !important; }
+  }
+  @media (max-width: 640px) {
+    section { padding: 28px 0; }
+    .section-title { font-size: 22px !important; }
+  }
   .section-label {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
     letter-spacing: 0.3em; color: var(--dim); text-transform: uppercase;
@@ -183,6 +289,7 @@
     gap: 12px;
   }
   @media (max-width: 900px) { .hsp-criteria { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .hsp-criteria { grid-template-columns: 1fr; } }
   .hsp-criterion {
     padding: 14px 12px; background: var(--ink-2);
     border-top: 2px solid var(--dawn);
@@ -202,38 +309,84 @@
   }
 
   /* MACRO TIMELINE */
+  /* TIMELINE — 四期並陳式，每期獨立區塊 */
   .timeline-wrapper {
     background: var(--ink-2); border: 1px solid var(--line);
     padding: 32px 28px; margin-top: 16px;
   }
-  .timeline-labels, .timeline-track, .timeline-colors {
-    display: grid; grid-template-columns: 1.5fr 0.6fr 1fr 1.8fr; gap: 0;
+  .timeline-track {
+    display: grid;
+    grid-template-columns: 1.5fr 0.6fr 1fr 1.8fr;
+    height: 6px;
+    margin-bottom: 32px;
+    border: 1px solid var(--line);
   }
-  .timeline-track { margin: 24px 0 16px; height: 12px; border: 1px solid var(--line); }
-  .timeline-labels { margin-bottom: 24px; }
-  .timeline-label {
-    padding: 12px 10px 0; border-left: 1px solid var(--line);
+  .timeline-phases {
+    display: grid;
+    grid-template-columns: 1.5fr 0.6fr 1fr 1.8fr;
+    gap: 0;
   }
-  .timeline-label:first-child { border-left: none; }
-  .timeline-label .year {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    color: var(--dim); letter-spacing: 0.15em; margin-bottom: 6px;
+  .timeline-phase {
+    padding: 0 14px;
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .timeline-label .phase {
-    font-family: 'Noto Serif TC', serif; font-size: 15px;
-    color: var(--linen); letter-spacing: 0.05em; margin-bottom: 8px;
+  .timeline-phase:first-child {
+    border-left: none;
+    padding-left: 0;
   }
-  .timeline-label .content { font-size: 11px; color: var(--dim); line-height: 1.6; }
-  .timeline-colors { padding-top: 16px; border-top: 1px solid var(--line); }
-  .timeline-col-stack {
-    padding: 0 10px; border-left: 1px solid var(--line);
-    display: flex; flex-wrap: wrap; gap: 4px; align-content: flex-start;
+  .timeline-phase .year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--dim);
+    letter-spacing: 0.15em;
   }
-  .timeline-col-stack:first-child { border-left: none; }
+  .timeline-phase .phase-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px; color: var(--linen);
+    letter-spacing: 0.05em; line-height: 1.3;
+  }
+  .timeline-phase .phase-content {
+    font-size: 11px; color: var(--dim);
+    line-height: 1.65;
+    flex-grow: 1;
+  }
+  .phase-chips {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding-top: 14px;
+    margin-top: 4px;
+    border-top: 1px dashed var(--line);
+  }
   .tl-chip {
-    width: 28px; height: 28px; border: 1px solid var(--line); cursor: pointer; transition: all 0.2s;
+    width: 28px; height: 28px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: transform 0.2s;
   }
   .tl-chip:hover { transform: scale(1.15); }
+  @media (max-width: 900px) {
+    .timeline-wrapper { padding: 24px 20px; }
+    .timeline-track {
+      height: 5px;
+      margin-bottom: 8px;
+    }
+    .timeline-phases { display: block; }
+    .timeline-phase {
+      border-left: none;
+      border-top: 1px solid var(--line);
+      padding: 24px 0 8px;
+      gap: 12px;
+    }
+    .timeline-phase:first-child {
+      border-top: none;
+      padding-top: 12px;
+    }
+    .timeline-phase .phase-name { font-size: 18px; }
+    .timeline-phase .phase-content { font-size: 12.5px; }
+    .phase-chips { padding-top: 14px; }
+    .tl-chip { width: 32px; height: 32px; }
+  }
 
   /* PALETTE */
   .palette-band { margin-bottom: 48px; }
@@ -258,6 +411,10 @@
     padding: 26px 22px; min-height: 230px;
     display: flex; flex-direction: column; justify-content: space-between;
     cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  @media (max-width: 640px) {
+    .color-card { min-height: 180px; padding: 22px 18px; }
+    .color-name { font-size: 22px !important; }
   }
   .color-card:hover { filter: brightness(1.08); }
   .color-card::after {
@@ -284,6 +441,7 @@
   /* USAGE MAP */
   .usage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   @media (max-width: 900px) { .usage-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .usage-grid { grid-template-columns: 1fr; } }
   .usage-card { padding: 22px 20px; background: var(--ink-2); border: 1px solid var(--line); }
   .usage-card-title {
     font-family: 'Noto Serif TC', serif; font-size: 16px;
@@ -527,42 +685,52 @@
       </div>
 
       <!-- HSP Validation -->
-      <div class="hsp-validation">
-        <h5>HSP-aligned 配色驗證</h5>
-        <div class="hsp-sub">HSP 友善色彩五項特徵 × 承器七色全符合</div>
-        <div class="hsp-criteria">
-          <div class="hsp-criterion">
-            <div class="hsp-c-num">01</div>
-            <div class="hsp-c-name">低飽和</div>
-            <div class="hsp-c-proof">茜紅不是鮮紅、銅璽不是亮金。</div>
-            <div class="hsp-c-check">✓ PASS</div>
-          </div>
-          <div class="hsp-criterion">
-            <div class="hsp-c-num">02</div>
-            <div class="hsp-c-name">自然材質</div>
-            <div class="hsp-c-proof">墨、陶、石、亞麻、銅、染料。</div>
-            <div class="hsp-c-check">✓ PASS</div>
-          </div>
-          <div class="hsp-criterion">
-            <div class="hsp-c-num">03</div>
-            <div class="hsp-c-name">暖底調</div>
-            <div class="hsp-c-proof">全系統無冷色；墨亦帶紅底。</div>
-            <div class="hsp-c-check">✓ PASS</div>
-          </div>
-          <div class="hsp-criterion">
-            <div class="hsp-c-num">04</div>
-            <div class="hsp-c-name">中低明度帶深度</div>
-            <div class="hsp-c-proof">主色非純黑；每色均有複雜性。</div>
-            <div class="hsp-c-check">✓ PASS</div>
-          </div>
-          <div class="hsp-criterion">
-            <div class="hsp-c-num">05</div>
-            <div class="hsp-c-name">呼吸留白</div>
-            <div class="hsp-c-proof">亞麻白 × 石溫提供恢復空間。</div>
-            <div class="hsp-c-check">✓ PASS</div>
+      <details class="collapsible hsp-validation-details">
+        <summary>
+          <span class="summary-tag">
+            <span>HSP-aligned 配色驗證 · 五項標準全部通過</span>
+            <span class="tag-hint">展開查看每項驗證細節</span>
+          </span>
+        </summary>
+        <div class="collapsible-body">
+          <div class="hsp-validation">
+            <h5>HSP-aligned 配色驗證</h5>
+            <div class="hsp-sub">HSP 友善色彩五項特徵 × 承器七色全符合</div>
+            <div class="hsp-criteria">
+              <div class="hsp-criterion">
+                <div class="hsp-c-num">01</div>
+                <div class="hsp-c-name">低飽和</div>
+                <div class="hsp-c-proof">茜紅不是鮮紅、銅璽不是亮金。</div>
+                <div class="hsp-c-check">✓ PASS</div>
+              </div>
+              <div class="hsp-criterion">
+                <div class="hsp-c-num">02</div>
+                <div class="hsp-c-name">自然材質</div>
+                <div class="hsp-c-proof">墨、陶、石、亞麻、銅、染料。</div>
+                <div class="hsp-c-check">✓ PASS</div>
+              </div>
+              <div class="hsp-criterion">
+                <div class="hsp-c-num">03</div>
+                <div class="hsp-c-name">暖底調</div>
+                <div class="hsp-c-proof">全系統無冷色；墨亦帶紅底。</div>
+                <div class="hsp-c-check">✓ PASS</div>
+              </div>
+              <div class="hsp-criterion">
+                <div class="hsp-c-num">04</div>
+                <div class="hsp-c-name">中低明度帶深度</div>
+                <div class="hsp-c-proof">主色非純黑；每色均有複雜性。</div>
+                <div class="hsp-c-check">✓ PASS</div>
+              </div>
+              <div class="hsp-criterion">
+                <div class="hsp-c-num">05</div>
+                <div class="hsp-c-name">呼吸留白</div>
+                <div class="hsp-c-proof">亞麻白 × 石溫提供恢復空間。</div>
+                <div class="hsp-c-check">✓ PASS</div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </details>
     </div>
   </section>
 
@@ -573,61 +741,63 @@
     <p class="section-intro">色彩不是靜態調色盤，是沿著生涯時間軸流動的語言。每個階段有它該有的主色比例——過去的基礎厚重、現在的張力清晰、未來的光芒尚在醞釀。</p>
 
     <div class="timeline-wrapper">
-      <div class="timeline-labels">
-        <div class="timeline-label">
-          <div class="year">2014.8 — 2024</div>
-          <div class="phase">十年之基 · Foundation</div>
-          <div class="content">企業溝通、媒體公關、永續發展、HCD；跨域合規治理語彙養成（ISO / NIST / COSO / GDPR / IRIS+ / IMP / B4SI / IFRS / ESRS）。</div>
-        </div>
-        <div class="timeline-label">
-          <div class="year">2022 — 2024</div>
-          <div class="phase">橋樑期</div>
-          <div class="content">轉向變革與轉型文化建設者；開啟雙學位進修。</div>
-        </div>
-        <div class="timeline-label">
-          <div class="year">2024 — 2026</div>
-          <div class="phase">拐點期 · Inflection</div>
-          <div class="content">NarraTect Advisory 成立；個人知識系統建構；顧問產品化；跨領域哲學實踐。</div>
-        </div>
-        <div class="timeline-label">
-          <div class="year">2024 — 2034 · 下一程</div>
-          <div class="phase">承器期 · Emergence</div>
-          <div class="content">NarraTect 成熟、板級曝光、變革與轉型領域思想領導、家業承接評估、文化傳承。</div>
-        </div>
-      </div>
-
-      <div class="timeline-track">
+      <!-- 色彩時間軸：連續漸層條，呈現色彩從過去到未來的流動 -->
+      <div class="timeline-track" aria-hidden="true">
         <div style="background:linear-gradient(to right, #1B1612, #8B7E6B);"></div>
         <div style="background:linear-gradient(to right, #8B7E6B, #A0604A);"></div>
         <div style="background:linear-gradient(to right, #A0604A, #9B3831);"></div>
         <div style="background:linear-gradient(to right, #9B3831, #B8893F, #D9BC7A);"></div>
       </div>
 
-      <div class="timeline-colors">
-        <div class="timeline-col-stack">
-          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
-          <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
-          <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
-        </div>
-        <div class="timeline-col-stack">
-          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
-          <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
-          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
-        </div>
-        <div class="timeline-col-stack">
-          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
-          <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
-          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
-          <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
-          <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
-        </div>
-        <div class="timeline-col-stack">
-          <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
-          <div class="tl-chip" data-hex="#D9BC7A" style="background:#D9BC7A;" title="曦金"></div>
-          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
-          <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
-          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
-        </div>
+      <!-- 四期並陳：每期包含自己的年份、名稱、敘述、該期色票 -->
+      <div class="timeline-phases">
+        <article class="timeline-phase">
+          <div class="year">2014.8 — 2024</div>
+          <div class="phase-name">十年之基 · Foundation</div>
+          <div class="phase-content">企業溝通、媒體公關、永續發展、HCD；跨域合規治理語彙養成（ISO / NIST / COSO / GDPR / IRIS+ / IMP / B4SI / IFRS / ESRS）。</div>
+          <div class="phase-chips" aria-label="此期色彩">
+            <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+            <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
+            <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
+          </div>
+        </article>
+
+        <article class="timeline-phase">
+          <div class="year">2022 — 2024</div>
+          <div class="phase-name">橋樑期</div>
+          <div class="phase-content">轉向變革與轉型文化建設者；開啟雙學位進修。</div>
+          <div class="phase-chips" aria-label="此期色彩">
+            <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+            <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
+            <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+          </div>
+        </article>
+
+        <article class="timeline-phase">
+          <div class="year">2024 — 2026</div>
+          <div class="phase-name">拐點期 · Inflection</div>
+          <div class="phase-content">NarraTect Advisory 成立；個人知識系統建構；顧問產品化；跨領域哲學實踐。</div>
+          <div class="phase-chips" aria-label="此期色彩">
+            <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+            <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
+            <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+            <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
+            <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
+          </div>
+        </article>
+
+        <article class="timeline-phase">
+          <div class="year">2024 — 2034 · 下一程</div>
+          <div class="phase-name">承器期 · Emergence</div>
+          <div class="phase-content">NarraTect 成熟、板級曝光、變革與轉型領域思想領導、家業承接評估、文化傳承。</div>
+          <div class="phase-chips" aria-label="此期色彩">
+            <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
+            <div class="tl-chip" data-hex="#D9BC7A" style="background:#D9BC7A;" title="曦金"></div>
+            <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+            <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
+            <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -888,19 +1058,39 @@
     <div class="footer-top">
       <div class="footer-note">
         <strong>關於「承器」這個名字</strong><br>
-        <strong>承</strong>不只是承接，也是「能受而不溢」——HSE 的滲透性與觀察者的節制之間的平衡。<strong>器</strong>不只是器物，在古典中文裡更指向 <em>器識</em>（判斷的眼界）、<em>器度</em>（容納的量體）、<em>君子不器</em>（不被單一角色定義）——這些正是跨傳統求道者的身分特徵：<em>參與儀式但不被吸收、學習傳統但不被歸類、對自己極高要求但不陷入自我評判</em>。<br><br>
-        <strong>東方哲學的隱形骨架</strong><br>
-        八種修習層次——倫理、自律、體位、調息、感官回收、凝神、禪定、融入——其實已經寫進這套色彩：自律是對自己的極高要求，感官回收是石溫提供的空間，凝神與禪定是觀察者意識，而所有色彩的訓練最終指向融入——主體與器物合一、承與器不再分離。<br><br>
-        <strong>反模式清單（不變）</strong><br>
-        ESG 慣性綠、科技業冷藍 + 亮橘、icon library、茜紅用於錯誤／警告、陶土與茜紅直接並置（需墨玄或亞麻白隔開）、曦金用於日常訊息。
+        <strong>承</strong>不只是承接，也是「能受而不溢」——HSE 的滲透性與觀察者的節制之間的平衡。<strong>器</strong>不只是器物，在古典中文裡更指向 <em>器識</em>（判斷的眼界）、<em>器度</em>（容納的量體）、<em>君子不器</em>（不被單一角色定義）——這些正是跨傳統求道者的身分特徵：<em>參與儀式但不被吸收、學習傳統但不被歸類、對自己極高要求但不陷入自我評判</em>。
+
+        <details class="collapsible footer-collapsible">
+          <summary>
+            <span class="summary-tag">
+              <span>東方哲學的隱形骨架</span>
+              <span class="tag-hint">八種修習層次</span>
+            </span>
+          </summary>
+          <div class="collapsible-body">
+            八種修習層次——倫理、自律、體位、調息、感官回收、凝神、禪定、融入——其實已經寫進這套色彩：自律是對自己的極高要求，感官回收是石溫提供的空間，凝神與禪定是觀察者意識，而所有色彩的訓練最終指向融入——主體與器物合一、承與器不再分離。
+          </div>
+        </details>
+
+        <details class="collapsible footer-collapsible">
+          <summary>
+            <span class="summary-tag">
+              <span>反模式清單</span>
+              <span class="tag-hint">六項不變的禁區</span>
+            </span>
+          </summary>
+          <div class="collapsible-body">
+            ESG 慣性綠、科技業冷藍 + 亮橘、icon library、茜紅用於錯誤／警告、陶土與茜紅直接並置（需墨玄或亞麻白隔開）、曦金用於日常訊息。
+          </div>
+        </details>
       </div>
 
       <div class="footer-cta">
         <div class="footer-cta-title">下一步 · 延伸與擴展</div>
         <p class="footer-cta-desc">完整延伸工作項目已整理為獨立路線圖——七個階段、三十五項具體工作，涵蓋基礎完成度到文化傳承的長期視野。</p>
-        <a href="/roadmap" class="footer-cta-link">
+        <a href="/roadmap" class="footer-cta-link" aria-label="前往內部路線圖 · Password protected">
           <span>前往路線圖</span>
-          <span class="arrow">→</span>
+          <span class="arrow" aria-hidden="true">→</span>
         </a>
         <div class="footer-cta-meta">INTERNAL · PASSWORD PROTECTED</div>
       </div>

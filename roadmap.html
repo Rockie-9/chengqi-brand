@@ -10,6 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   :root {
     --ink: #1B1612;
     --ink-deep: #0E0B09;
@@ -20,11 +24,105 @@
     --brass: #B8893F;
     --dawn: #D9BC7A;
     --linen: #EDE4D3;
+    --linen-deep: #E0D5BE;
     --stone: #8B7E6B;
     --line: rgba(237, 228, 211, 0.10);
     --line-strong: rgba(237, 228, 211, 0.22);
     --dim: rgba(237, 228, 211, 0.55);
     --dimmer: rgba(237, 228, 211, 0.35);
+    /* Spacing scale */
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+    --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+    --s-12: 48px; --s-16: 64px; --s-18: 72px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+  a:focus-visible { outline-offset: 4px; }
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  /* COLLAPSIBLE — 編輯級 details/summary，用於降低資訊密度 */
+  details.collapsible {
+    margin-top: 18px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    transition: border-color 0.25s;
+  }
+  details.collapsible[open] { border-color: var(--line-strong); }
+  details.collapsible > summary {
+    cursor: pointer;
+    padding: 16px 20px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+    user-select: none;
+  }
+  details.collapsible > summary:hover { color: var(--linen); }
+  details.collapsible[open] > summary { color: var(--linen); border-bottom: 1px solid var(--line); }
+  details.collapsible > summary::-webkit-details-marker { display: none; }
+  details.collapsible > summary::marker { content: ''; }
+  details.collapsible > summary::after {
+    content: '+';
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--brass);
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.25s;
+  }
+  details.collapsible[open] > summary::after {
+    content: '−';
+    color: var(--dawn);
+  }
+  details.collapsible .collapsible-body {
+    padding: 20px;
+    font-size: 12px; color: var(--dim);
+    line-height: 1.8;
+  }
+  details.collapsible .summary-tag {
+    flex: 1;
+    display: flex; align-items: center; gap: 12px;
+  }
+  details.collapsible .summary-tag .tag-hint {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 10px; color: var(--dimmer);
+    letter-spacing: 0.1em; text-transform: none;
+    font-weight: 400;
+  }
+  @media (max-width: 640px) {
+    details.collapsible > summary {
+      padding: 14px 16px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+    details.collapsible .collapsible-body { padding: 16px; }
+    details.collapsible .summary-tag .tag-hint { display: none; }
   }
   body {
     background: var(--ink);
@@ -42,19 +140,20 @@
     background: var(--ink);
     display: flex; align-items: center; justify-content: center;
     flex-direction: column;
+    padding: 24px;
     transition: opacity 0.4s ease;
   }
   .gate.hidden { opacity: 0; pointer-events: none; }
   .gate-mark {
     font-family: 'Noto Serif TC', serif;
-    font-size: 120px; font-weight: 500;
+    font-size: clamp(80px, 18vw, 120px); font-weight: 500;
     color: var(--linen);
     line-height: 0.85; letter-spacing: 0.08em;
-    margin-bottom: 48px;
+    margin-bottom: clamp(32px, 6vw, 48px);
     display: flex; align-items: center; gap: 8px;
   }
   .gate-mark .bar {
-    width: 3px; height: 60px;
+    width: 3px; height: clamp(40px, 10vw, 60px);
     background: var(--madder);
     margin: 0 10px;
   }
@@ -67,11 +166,12 @@
   }
   .gate-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 20px; color: var(--linen);
+    font-size: clamp(17px, 4vw, 20px); color: var(--linen);
     letter-spacing: 0.08em; margin-bottom: 32px;
+    text-align: center;
   }
   .gate-form {
-    display: flex; gap: 0;
+    display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
     border-bottom: 1px solid var(--line-strong);
     padding-bottom: 4px;
   }
@@ -80,7 +180,7 @@
     color: var(--linen);
     font-family: 'JetBrains Mono', monospace;
     font-size: 18px; letter-spacing: 0.3em;
-    padding: 10px 4px; width: 180px;
+    padding: 10px 4px; width: clamp(140px, 40vw, 180px);
     text-align: center;
   }
   .gate-form input::placeholder {
@@ -116,6 +216,8 @@
     display: none;
     padding: 64px 32px;
   }
+  @media (max-width: 900px) { .content { padding: 48px 24px; } }
+  @media (max-width: 640px) { .content { padding: 32px 16px; } }
   .content.shown { display: block; }
   .container { max-width: 1280px; margin: 0 auto; }
 
@@ -165,7 +267,10 @@
     background: var(--line);
     border: 1px solid var(--line);
   }
-  @media (max-width: 800px) {
+  @media (max-width: 900px) {
+    .summary { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
     .summary { grid-template-columns: repeat(2, 1fr); }
   }
   .stat {
@@ -215,27 +320,22 @@
   /* PHASE */
   .phase {
     margin-bottom: 56px;
+    padding-left: 16px;
+    border-left: 3px solid transparent;
   }
+  .phase.p1 { border-left-color: var(--linen); }
+  .phase.p2 { border-left-color: var(--clay); }
+  .phase.p3 { border-left-color: var(--madder); }
+  .phase.p4 { border-left-color: var(--brass); }
+  .phase.p5 { border-left-color: var(--dawn); }
+  .phase.p6 { border-left-color: var(--stone); }
+  .phase.p7 { border-left-color: var(--dimmer); }
   .phase-header {
-    display: flex; align-items: baseline; gap: 20px;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px 20px;
     padding-bottom: 18px;
     border-bottom: 1px solid var(--line);
     margin-bottom: 24px;
-    position: relative;
   }
-  .phase-header::before {
-    content: ''; position: absolute;
-    left: -32px; top: 0; bottom: 12px;
-    width: 3px;
-  }
-  .phase.p1 .phase-header::before { background: var(--linen); }
-  .phase.p2 .phase-header::before { background: var(--clay); }
-  .phase.p3 .phase-header::before { background: var(--madder); }
-  .phase.p4 .phase-header::before { background: var(--brass); }
-  .phase.p5 .phase-header::before { background: var(--dawn); }
-  .phase.p6 .phase-header::before { background: var(--stone); }
-  .phase.p7 .phase-header::before { background: var(--dimmer); }
-
   .phase-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px; letter-spacing: 0.25em;
@@ -277,9 +377,19 @@
     transition: background 0.2s;
   }
   .item:hover { background: var(--ink-3); }
-  @media (max-width: 800px) {
-    .item { grid-template-columns: 50px 1fr; }
+  @media (max-width: 900px) {
+    .phase { padding-left: 14px; }
+    .phase-title { font-size: 21px; }
+    .phase-timeframe { margin-left: 0; }
+    .item { grid-template-columns: 50px 1fr; padding: 18px 20px; }
     .item .item-tags { grid-column: 1 / -1; margin-top: 8px; }
+  }
+  @media (max-width: 640px) {
+    .phase { padding-left: 12px; margin-bottom: 40px; }
+    .phase-title { font-size: 19px; }
+    .item { padding: 16px; gap: 14px; }
+    .item-title { font-size: 15px; }
+    .item-title .en { display: block; margin-left: 0; margin-top: 4px; }
   }
   .item-code {
     font-family: 'JetBrains Mono', monospace;
@@ -381,33 +491,46 @@
     z-index: 10;
   }
   .logout:hover { color: var(--linen); border-color: var(--line-strong); }
+
+  @media (max-width: 640px) {
+    .home-back,
+    .logout {
+      top: 16px;
+      font-size: 9px;
+      padding: 6px 10px;
+      letter-spacing: 0.15em;
+    }
+    .home-back { left: 16px; }
+    .logout { right: 16px; }
+  }
 </style>
 </head>
 <body>
 
 <!-- 永遠可見的返回主頁連結，無論 gate 開啟或關閉 -->
-<a href="/" class="home-back">← 返回主頁</a>
+<a href="/" class="home-back" aria-label="返回主頁 · Back to home">← 返回主頁</a>
 
 <!-- ═══════════ PASSWORD GATE ═══════════ -->
-<div class="gate" id="gate">
-  <div class="gate-mark">
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-kicker">
+  <div class="gate-mark" aria-hidden="true">
     <span>承</span>
     <div class="bar"></div>
     <span class="second">器</span>
   </div>
-  <div class="gate-kicker">INTERNAL DOCUMENT · CONFIDENTIAL</div>
-  <div class="gate-title">延伸與擴展路線圖</div>
-  <form class="gate-form" onsubmit="return tryUnlock(event)">
-    <input type="password" id="pw" placeholder="PASSWORD" autofocus autocomplete="off">
+  <div class="gate-kicker" id="gate-kicker">INTERNAL DOCUMENT · CONFIDENTIAL</div>
+  <div class="gate-title" id="gate-title">延伸與擴展路線圖</div>
+  <form class="gate-form" onsubmit="return tryUnlock(event)" aria-label="Password unlock form">
+    <label for="pw" class="visually-hidden">Password</label>
+    <input type="password" id="pw" placeholder="PASSWORD" autofocus autocomplete="off" aria-label="Enter password to unlock roadmap" aria-describedby="err">
     <button type="submit">Unlock →</button>
   </form>
-  <div class="gate-error" id="err">INCORRECT · TRY AGAIN</div>
+  <div class="gate-error" id="err" role="alert" aria-live="assertive">INCORRECT · TRY AGAIN</div>
   <div class="gate-footnote">© 2026 NARRATECT ADVISORY</div>
 </div>
 
 <!-- ═══════════ CONTENT ═══════════ -->
-<div class="content" id="content">
-<a href="#" class="logout" onclick="lock();return false;">Lock →</a>
+<div class="content" id="content" aria-label="Roadmap content">
+<a href="#" class="logout" onclick="lock();return false;" aria-label="Lock roadmap and re-enter password">Lock →</a>
 <div class="container">
 
   <!-- HERO -->
@@ -834,9 +957,41 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-note">
-      <strong>使用說明</strong> · 這份路線圖是活文件，不是合約。優先順序可隨著市場信號、個人能量、合作機會調整。P0 項目是品牌系統真正成熟所需的最小可行集合，建議優先。P3 項目是生涯光譜的可能延伸，選擇性展開或完全不展開都合理。<br><br>
-      <strong>閱讀建議</strong> · 每季初重讀一次，問三個問題——(1) 上一季完成了什麼？(2) 下一季想動哪一項？(3) 有沒有新的項目該加進來？這份文件應該每年至少更新一次版本。<br><br>
-      <strong>密碼管理</strong> · 此頁面使用客戶端密碼保護（sessionStorage）。適合個人 / 小圈子使用，不適合存放敏感商業機密。若未來需要更強保護，可升級為 Vercel Password Protection 或 Cloudflare Access（需 Pro/Enterprise 方案）。
+      <details class="collapsible">
+        <summary>
+          <span class="summary-tag">
+            <span>使用說明</span>
+            <span class="tag-hint">這份路線圖是活文件</span>
+          </span>
+        </summary>
+        <div class="collapsible-body">
+          這份路線圖是活文件，不是合約。優先順序可隨著市場信號、個人能量、合作機會調整。P0 項目是品牌系統真正成熟所需的最小可行集合，建議優先。P3 項目是生涯光譜的可能延伸，選擇性展開或完全不展開都合理。
+        </div>
+      </details>
+
+      <details class="collapsible">
+        <summary>
+          <span class="summary-tag">
+            <span>閱讀建議</span>
+            <span class="tag-hint">每季初三個問題</span>
+          </span>
+        </summary>
+        <div class="collapsible-body">
+          每季初重讀一次，問三個問題——(1) 上一季完成了什麼？(2) 下一季想動哪一項？(3) 有沒有新的項目該加進來？這份文件應該每年至少更新一次版本。
+        </div>
+      </details>
+
+      <details class="collapsible">
+        <summary>
+          <span class="summary-tag">
+            <span>密碼管理</span>
+            <span class="tag-hint">保護機制說明</span>
+          </span>
+        </summary>
+        <div class="collapsible-body">
+          此頁面使用客戶端密碼保護（sessionStorage）。適合個人 / 小圈子使用，不適合存放敏感商業機密。若未來需要更強保護，可升級為 Vercel Password Protection 或 Cloudflare Access（需 Pro/Enterprise 方案）。
+        </div>
+      </details>
     </div>
     <div class="ip-footer">
       © 2026 NARRATECT ADVISORY. ALL RIGHTS RESERVED. INTERNAL ROADMAP · CONFIDENTIAL.
