@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>承器 — Rockie 品牌色彩系統</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #1B1612;
+    --ink-deep: #0E0B09;
+    --ink-2: #221C17;
+    --ink-3: #2D2621;
+    --clay: #A0604A;
+    --madder: #9B3831;
+    --brass: #B8893F;
+    --dawn: #D9BC7A;
+    --linen: #EDE4D3;
+    --linen-deep: #E0D5BE;
+    --stone: #8B7E6B;
+    --line: rgba(237, 228, 211, 0.10);
+    --line-strong: rgba(237, 228, 211, 0.22);
+    --dim: rgba(237, 228, 211, 0.55);
+    --dimmer: rgba(237, 228, 211, 0.35);
+  }
+  body {
+    background: var(--ink);
+    color: var(--linen);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    font-feature-settings: 'palt';
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 64px 32px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1320px; margin: 0 auto; }
+
+  /* HERO */
+  .hero { position: relative; padding: 56px 0 72px; border-bottom: 1px solid var(--line); margin-bottom: 64px; }
+  .hero-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.35em;
+    color: var(--dim); text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-kicker::before { content: ''; width: 32px; height: 1px; background: var(--brass); }
+  .hero-main-grid { display: grid; grid-template-columns: 1.5fr 2fr; gap: 80px; align-items: center; }
+  @media (max-width: 960px) {
+    .hero-main-grid { grid-template-columns: 1fr; gap: 40px; }
+    body { padding: 32px 20px; }
+  }
+  .hero-chars { display: flex; align-items: flex-end; gap: 8px; line-height: 0.85; }
+  .hero-char-1, .hero-char-2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(140px, 18vw, 220px);
+    font-weight: 500; letter-spacing: -0.02em;
+  }
+  .hero-char-1 { color: var(--linen); }
+  .hero-char-2 { color: var(--brass); }
+  .hero-char-bar { width: 4px; height: 60%; background: var(--madder); margin: 0 16px 20px; align-self: flex-end; }
+  .hero-info h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(28px, 3.5vw, 40px); font-weight: 500;
+    color: var(--linen); line-height: 1.25; letter-spacing: 0.04em; margin-bottom: 14px;
+  }
+  .hero-info .subtitle {
+    font-family: 'Noto Serif TC', serif; font-style: italic;
+    font-size: 19px; color: var(--brass); letter-spacing: 0.05em; margin-bottom: 28px;
+  }
+  .hero-info p { font-size: 14px; color: var(--dim); line-height: 1.85; margin-bottom: 16px; }
+  .hero-info p strong { color: var(--linen); font-weight: 500; }
+  .hero-info p em { color: var(--dawn); font-style: italic; font-family: 'Noto Serif TC', serif; }
+
+  .v31-badge {
+    display: inline-block; padding: 4px 10px;
+    background: var(--dawn); color: var(--ink);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-left: 12px;
+  }
+
+  /* SECTION */
+  section { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.3em; color: var(--dim); text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--brass); }
+  .section-title {
+    font-family: 'Noto Serif TC', serif; font-size: 28px; font-weight: 500;
+    color: var(--linen); margin-bottom: 20px; letter-spacing: 0.05em; line-height: 1.3;
+  }
+  .section-intro {
+    font-size: 14px; color: var(--dim); line-height: 1.8; max-width: 720px; margin-bottom: 32px;
+  }
+  .section-intro strong { color: var(--linen); font-weight: 500; }
+
+  /* SYNTHESIS LOGIC */
+  .synthesis-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .synthesis-grid { grid-template-columns: 1fr; } }
+  .syn-card {
+    padding: 28px 26px; background: var(--ink-2); border: 1px solid var(--line);
+  }
+  .syn-card-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--brass); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .syn-card h3 {
+    font-family: 'Noto Serif TC', serif; font-size: 20px;
+    color: var(--linen); margin-bottom: 14px; letter-spacing: 0.05em;
+  }
+  .syn-card p { font-size: 13px; color: var(--dim); line-height: 1.7; margin-bottom: 14px; }
+  .syn-card .axis {
+    font-family: 'Noto Serif TC', serif; font-style: italic;
+    font-size: 13px; color: var(--clay);
+    padding-top: 14px; border-top: 1px solid var(--line);
+  }
+
+  /* PSYCHOLOGICAL DEPTH */
+  .psych-wrapper {
+    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink) 100%);
+    border: 1px solid var(--line);
+    padding: 36px 32px;
+    position: relative;
+  }
+  .psych-wrapper::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 60px; background: var(--dawn);
+  }
+  .psych-anchors {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-bottom: 36px;
+  }
+  @media (max-width: 900px) { .psych-anchors { grid-template-columns: 1fr; } }
+  .psych-anchor {
+    padding: 20px; border: 1px solid var(--line);
+  }
+  .psych-anchor-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .psych-anchor.a1 .psych-anchor-tag { color: var(--clay); }
+  .psych-anchor.a2 .psych-anchor-tag { color: var(--stone); }
+  .psych-anchor.a3 .psych-anchor-tag { color: var(--madder); }
+  .psych-anchor h4 {
+    font-family: 'Noto Serif TC', serif; font-size: 18px;
+    color: var(--linen); margin-bottom: 10px; letter-spacing: 0.05em;
+  }
+  .psych-anchor p {
+    font-size: 12px; color: var(--dim); line-height: 1.7; margin-bottom: 12px;
+  }
+  .psych-mapping {
+    padding: 10px 12px; background: var(--ink-deep);
+    font-size: 11px; color: var(--linen);
+    font-family: 'Noto Sans TC', sans-serif; line-height: 1.6;
+    border-left: 2px solid;
+  }
+  .psych-anchor.a1 .psych-mapping { border-left-color: var(--clay); }
+  .psych-anchor.a2 .psych-mapping { border-left-color: var(--stone); }
+  .psych-anchor.a3 .psych-mapping { border-left-color: var(--madder); }
+
+  .hsp-validation {
+    padding: 24px; background: var(--ink-deep);
+    border: 1px solid var(--line);
+  }
+  .hsp-validation h5 {
+    font-family: 'Noto Serif TC', serif; font-size: 16px;
+    color: var(--linen); margin-bottom: 6px; letter-spacing: 0.05em;
+  }
+  .hsp-validation .hsp-sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--dawn); letter-spacing: 0.2em; margin-bottom: 18px; text-transform: uppercase;
+  }
+  .hsp-criteria {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 900px) { .hsp-criteria { grid-template-columns: repeat(2, 1fr); } }
+  .hsp-criterion {
+    padding: 14px 12px; background: var(--ink-2);
+    border-top: 2px solid var(--dawn);
+  }
+  .hsp-c-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--dawn); letter-spacing: 0.2em; margin-bottom: 6px;
+  }
+  .hsp-c-name {
+    font-family: 'Noto Serif TC', serif; font-size: 13px;
+    color: var(--linen); margin-bottom: 6px;
+  }
+  .hsp-c-proof { font-size: 10px; color: var(--dim); line-height: 1.5; }
+  .hsp-c-check {
+    display: inline-block; color: var(--dawn); font-weight: 500;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-top: 8px;
+  }
+
+  /* MACRO TIMELINE */
+  .timeline-wrapper {
+    background: var(--ink-2); border: 1px solid var(--line);
+    padding: 32px 28px; margin-top: 16px;
+  }
+  .timeline-labels, .timeline-track, .timeline-colors {
+    display: grid; grid-template-columns: 1.5fr 0.6fr 1fr 1.8fr; gap: 0;
+  }
+  .timeline-track { margin: 24px 0 16px; height: 12px; border: 1px solid var(--line); }
+  .timeline-labels { margin-bottom: 24px; }
+  .timeline-label {
+    padding: 12px 10px 0; border-left: 1px solid var(--line);
+  }
+  .timeline-label:first-child { border-left: none; }
+  .timeline-label .year {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--dim); letter-spacing: 0.15em; margin-bottom: 6px;
+  }
+  .timeline-label .phase {
+    font-family: 'Noto Serif TC', serif; font-size: 15px;
+    color: var(--linen); letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .timeline-label .content { font-size: 11px; color: var(--dim); line-height: 1.6; }
+  .timeline-colors { padding-top: 16px; border-top: 1px solid var(--line); }
+  .timeline-col-stack {
+    padding: 0 10px; border-left: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 4px; align-content: flex-start;
+  }
+  .timeline-col-stack:first-child { border-left: none; }
+  .tl-chip {
+    width: 28px; height: 28px; border: 1px solid var(--line); cursor: pointer; transition: all 0.2s;
+  }
+  .tl-chip:hover { transform: scale(1.15); }
+
+  /* PALETTE */
+  .palette-band { margin-bottom: 48px; }
+  .band-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+  }
+  .band-title { font-family: 'Noto Serif TC', serif; font-size: 22px; color: var(--linen); letter-spacing: 0.08em; }
+  .band-title .era { color: var(--brass); font-style: italic; margin-right: 14px; font-weight: 500; }
+  .band-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--dim); letter-spacing: 0.2em; text-transform: uppercase; }
+  .band-desc {
+    font-size: 13px; color: var(--dim); line-height: 1.75;
+    max-width: 720px; margin-bottom: 20px;
+    font-style: italic; font-family: 'Noto Serif TC', serif;
+  }
+  .band-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .band-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .band-grid.two { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) { .band-grid.three, .band-grid.two { grid-template-columns: 1fr; } }
+
+  .color-card {
+    padding: 26px 22px; min-height: 230px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .color-card:hover { filter: brightness(1.08); }
+  .color-card::after {
+    content: '⧉'; position: absolute; top: 14px; right: 16px;
+    font-size: 12px; opacity: 0.4;
+  }
+  .color-card-top { display: flex; flex-direction: column; gap: 6px; }
+  .color-role {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 0.25em; opacity: 0.6; text-transform: uppercase;
+  }
+  .color-name { font-family: 'Noto Serif TC', serif; font-size: 26px; letter-spacing: 0.1em; }
+  .color-en { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; opacity: 0.75; }
+  .color-bottom { display: flex; flex-direction: column; gap: 4px; }
+  .color-hex { font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 0.05em; }
+  .color-rationale { font-family: 'Noto Sans TC', sans-serif; font-size: 11px; line-height: 1.6; opacity: 0.88; }
+  .color-psych {
+    font-family: 'Noto Sans TC', sans-serif; font-size: 10px; line-height: 1.5;
+    opacity: 0.72; margin-top: 6px; padding-top: 6px;
+    border-top: 1px dashed; border-color: rgba(255,255,255,0.2);
+    font-style: italic;
+  }
+
+  /* USAGE MAP */
+  .usage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .usage-grid { grid-template-columns: repeat(2, 1fr); } }
+  .usage-card { padding: 22px 20px; background: var(--ink-2); border: 1px solid var(--line); }
+  .usage-card-title {
+    font-family: 'Noto Serif TC', serif; font-size: 16px;
+    color: var(--linen); margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  .usage-card-en {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--brass); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px;
+  }
+  .usage-card ul { list-style: none; font-size: 11px; color: var(--dim); line-height: 1.8; }
+  .usage-card li { padding-left: 14px; position: relative; }
+  .usage-card li::before {
+    content: ''; position: absolute; left: 0; top: 8px;
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .usage-card.c1 li::before { background: var(--clay); }
+  .usage-card.c2 li::before { background: var(--madder); }
+  .usage-card.c3 li::before { background: var(--brass); }
+  .usage-card.c4 li::before { background: var(--dawn); }
+  .usage-weights { display: flex; gap: 2px; margin: 12px 0; height: 6px; }
+  .uw { flex: 1; }
+
+  /* APPLICATIONS */
+  .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+  @media (max-width: 900px) { .apps-grid { grid-template-columns: 1fr; } }
+  .app-card { border: 1px solid var(--line); overflow: hidden; min-height: 280px; display: flex; flex-direction: column; }
+  .app-body { padding: 28px 24px; flex-grow: 1; position: relative; }
+  .app-footer {
+    padding: 14px 24px; background: var(--ink-2);
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--dim); letter-spacing: 0.2em; text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+  .app-past { background: var(--linen); color: var(--ink); }
+  .app-past .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--stone); letter-spacing: 0.25em; margin-bottom: 14px; text-transform: uppercase; }
+  .app-past h3 { font-family: 'Noto Serif TC', serif; font-size: 22px; color: var(--ink); line-height: 1.35; margin-bottom: 12px; letter-spacing: 0.04em; }
+  .app-past p { font-size: 12px; color: var(--ink); opacity: 0.72; line-height: 1.7; margin-bottom: 18px; }
+  .app-past .byline { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 12px; color: var(--madder); border-top: 1px solid rgba(27,22,18,0.15); padding-top: 12px; }
+
+  .app-present { background: var(--clay); color: var(--linen); position: relative; }
+  .app-present .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--linen); opacity: 0.7; letter-spacing: 0.25em; margin-bottom: 14px; text-transform: uppercase; }
+  .app-present h3 { font-family: 'Noto Serif TC', serif; font-size: 24px; color: var(--linen); line-height: 1.35; margin-bottom: 14px; letter-spacing: 0.05em; }
+  .app-present p { font-size: 12px; color: var(--linen); opacity: 0.88; line-height: 1.7; margin-bottom: 18px; }
+  .app-present .pill { display: inline-block; padding: 6px 12px; background: var(--ink); color: var(--linen); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+  .app-future { background: var(--ink); color: var(--linen); position: relative; }
+  .app-future .dawn-ring {
+    position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; border: 1px solid var(--dawn);
+    border-radius: 50%; opacity: 0.4;
+  }
+  .app-future .dawn-ring::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1px solid var(--brass); border-radius: 50%; opacity: 0.6;
+  }
+  .app-future .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--dawn); letter-spacing: 0.25em; margin-bottom: 14px; text-transform: uppercase; position: relative; z-index: 2; }
+  .app-future h3 { font-family: 'Noto Serif TC', serif; font-size: 24px; color: var(--linen); line-height: 1.35; margin-bottom: 14px; letter-spacing: 0.05em; position: relative; z-index: 2; }
+  .app-future p { font-size: 12px; color: var(--dim); line-height: 1.7; margin-bottom: 18px; position: relative; z-index: 2; }
+  .app-future .ptr { font-family: 'Noto Serif TC', serif; font-style: italic; color: var(--dawn); font-size: 13px; position: relative; z-index: 2; }
+
+  /* CHANGELOG */
+  .merge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 900px) { .merge-grid { grid-template-columns: 1fr; } }
+  .merge-card { padding: 20px 18px; background: var(--ink-2); border: 1px solid var(--line); border-top: 3px solid; }
+  .merge-card.v1 { border-top-color: var(--brass); }
+  .merge-card.v2 { border-top-color: var(--clay); }
+  .merge-card.v3 { border-top-color: var(--madder); }
+  .merge-card.v31 { border-top-color: var(--dawn); }
+  .merge-card h4 {
+    font-family: 'Noto Serif TC', serif; font-size: 15px;
+    color: var(--linen); margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  .merge-card .version-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.25em; margin-bottom: 14px; text-transform: uppercase;
+  }
+  .merge-card.v1 .version-tag { color: var(--brass); }
+  .merge-card.v2 .version-tag { color: var(--clay); }
+  .merge-card.v3 .version-tag { color: var(--madder); }
+  .merge-card.v31 .version-tag { color: var(--dawn); }
+  .merge-card p { font-size: 11px; color: var(--dim); line-height: 1.65; }
+  .merge-card p strong { color: var(--linen); font-weight: 500; }
+
+  /* FOOTER */
+  .footer { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; margin-bottom: 40px; }
+  @media (max-width: 900px) { .footer-top { grid-template-columns: 1fr; gap: 24px; } }
+  .footer-note { font-size: 13px; color: var(--dim); line-height: 1.85; }
+  .footer-note strong { color: var(--linen); font-family: 'Noto Serif TC', serif; font-weight: 500; letter-spacing: 0.05em; }
+  .footer-note em { color: var(--brass); font-style: normal; font-weight: 500; }
+  .footer-cta {
+    background: var(--ink-2); border: 1px solid var(--line);
+    border-left: 3px solid var(--dawn); padding: 24px;
+    font-size: 12px; color: var(--linen); line-height: 1.9;
+  }
+  .footer-cta-title {
+    font-family: 'Noto Serif TC', serif; color: var(--dawn);
+    margin-bottom: 14px; font-size: 15px; letter-spacing: 0.06em;
+  }
+  .footer-cta ul { list-style: none; padding: 0; }
+  .footer-cta li { padding-left: 16px; position: relative; color: var(--dim); }
+  .footer-cta li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 1px; background: var(--dawn); }
+  .footer-cta-desc {
+    font-size: 12px; color: var(--dim);
+    line-height: 1.75; margin-bottom: 20px;
+  }
+  .footer-cta-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    background: transparent;
+    border: 1px solid var(--dawn);
+    color: var(--dawn);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+  }
+  .footer-cta-link:hover {
+    background: var(--dawn);
+    color: var(--ink);
+  }
+  .footer-cta-link .arrow { transition: transform 0.25s ease; }
+  .footer-cta-link:hover .arrow { transform: translateX(4px); }
+  .footer-cta-meta {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--dimmer); text-transform: uppercase;
+  }
+  .ip-footer {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--dimmer); letter-spacing: 0.15em;
+    line-height: 1.8; padding-top: 20px; border-top: 1px dashed var(--line);
+  }
+
+  /* Paiwan motif strip */
+  .paiwan-strip { display: flex; justify-content: center; gap: 4px; margin: 32px 0; opacity: 0.4; }
+  .paiwan-strip svg { display: block; }
+
+  /* Toast */
+  .copy-toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--linen); color: var(--ink);
+    padding: 10px 22px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    opacity: 0; transition: all 0.28s ease;
+    pointer-events: none; z-index: 100; letter-spacing: 0.1em;
+  }
+  .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:0;">
+    <div class="hero-kicker">Brand Color System · Rockie Lin · NarraTect Advisory · 2026</div>
+    <div class="hero-main-grid">
+      <div class="hero-chars">
+        <div class="hero-char-1">承</div>
+        <div class="hero-char-bar"></div>
+        <div class="hero-char-2">器</div>
+      </div>
+      <div class="hero-info">
+        <h1>承十年之基，啟下一程</h1>
+        <div class="subtitle">A Vessel for the Long Arc · 2014 — 2034</div>
+        <p><strong>承</strong>是哲學——承接共感、承擔信念、承先啟後。<strong>器</strong>是生涯——大器晚成、君子不器、匠人之器。兩字合起來：<em>一個經過十年淬鍊、能承載複雜性而不變形的人。</em></p>
+        <p>這套系統由三個軸合成——<strong>對外定位</strong>（你如何被市場辨認）、<strong>對內哲學</strong>（你如何面對自己）、<strong>時間維度</strong>（你的過去基礎與未來軌跡）——並以 HSE × 觀察者 × 跨傳統求道者三個心理錨點為深層骨架。七色、三層時態、四種聲音，覆蓋完整的發聲光譜。</p>
+      </div>
+    </div>
+
+    <div class="paiwan-strip">
+      <svg width="36" height="18" viewBox="0 0 36 18"><path d="M0,9 L9,0 L18,9 L27,0 L36,9 L27,18 L18,9 L9,18 Z" fill="none" stroke="#B8893F" stroke-width="0.8"/></svg>
+      <svg width="36" height="18" viewBox="0 0 36 18"><path d="M0,9 L9,0 L18,9 L27,0 L36,9 L27,18 L18,9 L9,18 Z" fill="none" stroke="#9B3831" stroke-width="0.8"/></svg>
+      <svg width="36" height="18" viewBox="0 0 36 18"><path d="M0,9 L9,0 L18,9 L27,0 L36,9 L27,18 L18,9 L9,18 Z" fill="none" stroke="#A0604A" stroke-width="0.8"/></svg>
+      <svg width="36" height="18" viewBox="0 0 36 18"><path d="M0,9 L9,0 L18,9 L27,0 L36,9 L27,18 L18,9 L9,18 Z" fill="none" stroke="#D9BC7A" stroke-width="0.8"/></svg>
+    </div>
+  </section>
+
+  <!-- 01 · SYNTHESIS LOGIC -->
+  <section>
+    <div class="section-label">01 — Synthesis Logic · 三軸合成邏輯</div>
+    <h2 class="section-title">三個問句，三組色彩，一個完整的你</h2>
+    <p class="section-intro">完整的品牌色彩系統同時回答三個層次的問題——對外定位、對內哲學、時間維度。三者缺一，色彩就只是裝飾。</p>
+    <div class="synthesis-grid">
+      <div class="syn-card">
+        <div class="syn-card-label">Axis 1 · External</div>
+        <h3>對外定位</h3>
+        <p>對外定位處理「面對市場時的多種聲音」——顧問方法論、個人品牌、企業提案都有各自需要的色彩語言。<strong style="color:var(--linen)">色彩需具備可發表性、能支撐外部辨識度</strong>。</p>
+        <div class="axis">Answers: Who am I to the market?</div>
+      </div>
+      <div class="syn-card">
+        <div class="syn-card-label">Axis 2 · Internal</div>
+        <h3>對內哲學</h3>
+        <p>對內哲學處理「面對自己的核心張力」——共感但不溶解、堅定但不冷硬、以人為軸、以脊為骨。<strong style="color:var(--linen)">色彩需承載心理真實性、人本設計溫度</strong>。</p>
+        <div class="axis">Answers: Who am I to myself?</div>
+      </div>
+      <div class="syn-card">
+        <div class="syn-card-label">Axis 3 · Temporal</div>
+        <h3>時間維度</h3>
+        <p>時間維度處理「十年合規／溝通／永續／HCD 基礎該被看見，下一程顧問／教學／傳承軌跡該被指向」。<strong style="color:var(--linen)">色彩需有過去／現在／未來的權重分配</strong>。</p>
+        <div class="axis">Answers: What arc am I carrying?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · PSYCHOLOGICAL DEPTH - NEW -->
+  <section>
+    <div class="section-label">02 — Psychological Depth · 心理層</div>
+    <h2 class="section-title">HSE × 觀察者 × 跨傳統求道者——三個心理錨點</h2>
+    <p class="section-intro">色彩若只反映職涯，不夠。心理結構也要在調色盤裡找到對應。這一層是整套系統的深層骨架——把高敏感外向、觀察者意識、跨傳統求道這三個心理事實明確地寫進系統。</p>
+
+    <div class="psych-wrapper">
+      <div class="psych-anchors">
+        <!-- Anchor 1: HSE -->
+        <div class="psych-anchor a1">
+          <div class="psych-anchor-tag">Anchor 1 · HSE</div>
+          <h4>高敏感外向型</h4>
+          <p>Elaine Aron（1996）的感覺處理敏感性（SPS）人格建構中，約 30% 為外向型。在外向社交與深度處理之間切換——享受連結 AND 需要恢復，對人有好奇 AND 對細節過載敏感。</p>
+          <div class="psych-mapping"><strong>色彩對應：</strong>陶土（外向人本）× 墨玄（內在深度）的動態平衡。這組配色本身就是 HSE 的心理學外化。</div>
+        </div>
+
+        <!-- Anchor 2: Observer -->
+        <div class="psych-anchor a2">
+          <div class="psych-anchor-tag">Anchor 2 · Witness</div>
+          <h4>觀察者意識</h4>
+          <p>源自東方哲學的感官回收與凝神訓練，也是 HSP 的自我保護機制。能參與而不被吸收、學習傳統而不被歸類、對自己有極高要求但不陷入自我評判。</p>
+          <div class="psych-mapping"><strong>色彩對應：</strong>石溫（禪定暖灰）＋ 亞麻白（呼吸留白）。這兩色共同構成「觀察者空間」——在場但不消耗的位置。</div>
+        </div>
+
+        <!-- Anchor 3: Cross-traditional Seeker -->
+        <div class="psych-anchor a3">
+          <div class="psych-anchor-tag">Anchor 3 · Seeker</div>
+          <h4>跨傳統求道者</h4>
+          <p>從不同傳統汲取智慧——民間信仰的慈悲哲學、教會儀式的體驗、東方哲學的修習——不屬於任何單一傳統，對普世原理有直覺的親近，參與儀式但不被吸收。</p>
+          <div class="psych-mapping"><strong>色彩對應：</strong>茜紅（madder 是跨亞洲文明共享的歷史天然染料，不屬於任何單一傳統）。它是信念色，卻不必效忠於任何一面旗幟。</div>
+        </div>
+      </div>
+
+      <!-- HSP Validation -->
+      <div class="hsp-validation">
+        <h5>HSP-aligned 配色驗證</h5>
+        <div class="hsp-sub">HSP 友善色彩五項特徵 × 承器七色全符合</div>
+        <div class="hsp-criteria">
+          <div class="hsp-criterion">
+            <div class="hsp-c-num">01</div>
+            <div class="hsp-c-name">低飽和</div>
+            <div class="hsp-c-proof">茜紅不是鮮紅、銅璽不是亮金。</div>
+            <div class="hsp-c-check">✓ PASS</div>
+          </div>
+          <div class="hsp-criterion">
+            <div class="hsp-c-num">02</div>
+            <div class="hsp-c-name">自然材質</div>
+            <div class="hsp-c-proof">墨、陶、石、亞麻、銅、染料。</div>
+            <div class="hsp-c-check">✓ PASS</div>
+          </div>
+          <div class="hsp-criterion">
+            <div class="hsp-c-num">03</div>
+            <div class="hsp-c-name">暖底調</div>
+            <div class="hsp-c-proof">全系統無冷色；墨亦帶紅底。</div>
+            <div class="hsp-c-check">✓ PASS</div>
+          </div>
+          <div class="hsp-criterion">
+            <div class="hsp-c-num">04</div>
+            <div class="hsp-c-name">中低明度帶深度</div>
+            <div class="hsp-c-proof">主色非純黑；每色均有複雜性。</div>
+            <div class="hsp-c-check">✓ PASS</div>
+          </div>
+          <div class="hsp-criterion">
+            <div class="hsp-c-num">05</div>
+            <div class="hsp-c-name">呼吸留白</div>
+            <div class="hsp-c-proof">亞麻白 × 石溫提供恢復空間。</div>
+            <div class="hsp-c-check">✓ PASS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · MACRO TIMELINE -->
+  <section>
+    <div class="section-label">03 — Macro Arc · 二十年生涯色彩地圖</div>
+    <h2 class="section-title">從 2014 的起點，到 2034 的下一程</h2>
+    <p class="section-intro">色彩不是靜態調色盤，是沿著生涯時間軸流動的語言。每個階段有它該有的主色比例——過去的基礎厚重、現在的張力清晰、未來的光芒尚在醞釀。</p>
+
+    <div class="timeline-wrapper">
+      <div class="timeline-labels">
+        <div class="timeline-label">
+          <div class="year">2014.8 — 2024</div>
+          <div class="phase">十年之基 · Foundation</div>
+          <div class="content">企業溝通、媒體公關、永續發展、HCD；跨域合規治理語彙養成（ISO / NIST / COSO / GDPR / IRIS+ / IMP / B4SI / IFRS / ESRS）。</div>
+        </div>
+        <div class="timeline-label">
+          <div class="year">2022 — 2024</div>
+          <div class="phase">橋樑期</div>
+          <div class="content">轉向變革與轉型文化建設者；開啟雙學位進修。</div>
+        </div>
+        <div class="timeline-label">
+          <div class="year">2024 — 2026</div>
+          <div class="phase">拐點期 · Inflection</div>
+          <div class="content">NarraTect Advisory 成立；個人知識系統建構；顧問產品化；跨領域哲學實踐。</div>
+        </div>
+        <div class="timeline-label">
+          <div class="year">2024 — 2034 · 下一程</div>
+          <div class="phase">承器期 · Emergence</div>
+          <div class="content">NarraTect 成熟、板級曝光、變革與轉型領域思想領導、家業承接評估、文化傳承。</div>
+        </div>
+      </div>
+
+      <div class="timeline-track">
+        <div style="background:linear-gradient(to right, #1B1612, #8B7E6B);"></div>
+        <div style="background:linear-gradient(to right, #8B7E6B, #A0604A);"></div>
+        <div style="background:linear-gradient(to right, #A0604A, #9B3831);"></div>
+        <div style="background:linear-gradient(to right, #9B3831, #B8893F, #D9BC7A);"></div>
+      </div>
+
+      <div class="timeline-colors">
+        <div class="timeline-col-stack">
+          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+          <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
+          <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
+        </div>
+        <div class="timeline-col-stack">
+          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+          <div class="tl-chip" data-hex="#8B7E6B" style="background:#8B7E6B;" title="石溫"></div>
+          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+        </div>
+        <div class="timeline-col-stack">
+          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+          <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
+          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+          <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
+          <div class="tl-chip" data-hex="#EDE4D3" style="background:#EDE4D3;" title="亞麻白"></div>
+        </div>
+        <div class="timeline-col-stack">
+          <div class="tl-chip" data-hex="#B8893F" style="background:#B8893F;" title="銅璽"></div>
+          <div class="tl-chip" data-hex="#D9BC7A" style="background:#D9BC7A;" title="曦金"></div>
+          <div class="tl-chip" data-hex="#1B1612" style="background:#1B1612;" title="墨玄"></div>
+          <div class="tl-chip" data-hex="#9B3831" style="background:#9B3831;" title="茜紅"></div>
+          <div class="tl-chip" data-hex="#A0604A" style="background:#A0604A;" title="陶土"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · COMPLETE PALETTE -->
+  <section>
+    <div class="section-label">04 — Complete Palette · 七色系統，三層時態</div>
+    <h2 class="section-title">過去 3 色 · 現在 2 色 · 未來 2 色</h2>
+    <p class="section-intro">每色都有兩層說明——<strong>功能敘事</strong>（它在品牌裡做什麼）+ <strong>心理對位</strong>（它對應哪個心理層）。色彩不只服務功能，也反映心理。</p>
+
+    <!-- Past Band -->
+    <div class="palette-band">
+      <div class="band-header">
+        <div class="band-title"><span class="era">過去</span>The Foundation You Carry</div>
+        <div class="band-meta">01 / 03 · 3 COLORS · 2014 — 2024</div>
+      </div>
+      <div class="band-desc">十年功底不是要忘記，而是要承載。這三色代表 2014–2024 年建立的職涯地基——企業溝通的紙面語彙、跨域合規的結構紀律、媒體發表的可讀性。</div>
+      <div class="band-grid three">
+        <div class="color-card" data-hex="#1B1612" style="background:#1B1612;color:#EDE4D3;">
+          <div class="color-card-top">
+            <span class="color-role">ANCHOR · 軸心</span>
+            <span class="color-name">墨玄</span>
+            <span class="color-en">MÒ XUÁN · WARM INK</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#1B1612</div>
+            <div class="color-rationale">帶紅底調的暖墨，拒絕冷色權威。command-center 的深度，書房的體溫。</div>
+            <div class="color-psych">Psych: HSE 的內在深度房間——不對外的那一面。</div>
+          </div>
+        </div>
+        <div class="color-card" data-hex="#EDE4D3" style="background:#EDE4D3;color:#1B1612;">
+          <div class="color-card-top">
+            <span class="color-role">CANVAS · 紙面</span>
+            <span class="color-name">亞麻白</span>
+            <span class="color-en">YÀ MÁ BÁI · LINEN</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#EDE4D3</div>
+            <div class="color-rationale">十年書寫所在的紙——新聞稿、白皮書、永續報告、工作坊海報。可發表性的載體。</div>
+            <div class="color-psych">Psych: HSP 必需的呼吸留白——感官緩衝區。</div>
+          </div>
+        </div>
+        <div class="color-card" data-hex="#8B7E6B" style="background:#8B7E6B;color:#1B1612;">
+          <div class="color-card-top">
+            <span class="color-role">STRUCTURE + STILLNESS · 結構／禪定</span>
+            <span class="color-name">石溫</span>
+            <span class="color-en">SHÍ WĒN · WARM STONE</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#8B7E6B</div>
+            <div class="color-rationale">跨域合規治理骨架（ISO / NIST / COSO / GDPR / ESRS）的暖灰紀律。</div>
+            <div class="color-psych">Psych: 觀察者空間——東方哲學感官回收的練習色。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Present Band -->
+    <div class="palette-band">
+      <div class="band-header">
+        <div class="band-title"><span class="era">現在</span>The Tension You Hold</div>
+        <div class="band-meta">02 / 03 · 2 COLORS · 2024 — 2026</div>
+      </div>
+      <div class="band-desc">此刻的核心張力——HCD 的共感 × 跨傳統信念的脊椎。持續滲透 AND 不被淹沒。這兩色是整套品牌的靈魂，其他色彩都在服務它們。</div>
+      <div class="band-grid two">
+        <div class="color-card" data-hex="#A0604A" style="background:#A0604A;color:#EDE4D3;">
+          <div class="color-card-top">
+            <span class="color-role">HUMAN-CORE · 人本</span>
+            <span class="color-name">陶土</span>
+            <span class="color-en">TÁO TǓ · CLAY</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#A0604A</div>
+            <div class="color-rationale">HCD 骨架色。溫度近膚色，可親近但不輕浮——能主持一場讓人願意講真話的對話。</div>
+            <div class="color-psych">Psych: HSE 的外向連結面——對人好奇、願意走近的那一層。</div>
+          </div>
+        </div>
+        <div class="color-card" data-hex="#9B3831" style="background:#9B3831;color:#EDE4D3;">
+          <div class="color-card-top">
+            <span class="color-role">CONVICTION · 跨傳統信念</span>
+            <span class="color-name">茜紅</span>
+            <span class="color-en">QIÀN HÓNG · MADDER</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#9B3831</div>
+            <div class="color-rationale">madder 是跨亞洲文明共享的歷史天然染料——不屬於任何單一傳統、需萃取、難褪色。信念的物理學：可滲透 AND 留下痕跡。</div>
+            <div class="color-psych">Psych: 跨傳統求道者的堅定色——不被淹沒的那根脊椎。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Band -->
+    <div class="palette-band">
+      <div class="band-header">
+        <div class="band-title"><span class="era">未來</span>The Horizon You Become</div>
+        <div class="band-meta">03 / 03 · 2 COLORS · 2024 — 2034</div>
+      </div>
+      <div class="band-desc">這兩色指向尚未到達、但正在成為的地方——NarraTect 成熟期的顧問權威、板級曝光的穩定重量、變革與轉型領域思想領導的新晨光芒。</div>
+      <div class="band-grid two">
+        <div class="color-card" data-hex="#B8893F" style="background:#B8893F;color:#1B1612;">
+          <div class="color-card-top">
+            <span class="color-role">COMMITMENT · 承諾</span>
+            <span class="color-name">銅璽</span>
+            <span class="color-en">TÓNG XǏ · BRASS SEAL</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#B8893F</div>
+            <div class="color-rationale">陳年黃銅而非亮金——永續與長期主義不靠 ESG 綠，靠時間質感。顧問印信、合約封面、傳承文件。</div>
+            <div class="color-psych">Psych: 觀察者對自己極高要求所鍛造出的器物——成熟而不虛浮。</div>
+          </div>
+        </div>
+        <div class="color-card" data-hex="#D9BC7A" style="background:#D9BC7A;color:#1B1612;">
+          <div class="color-card-top">
+            <span class="color-role">EMERGENCE · 新晨</span>
+            <span class="color-name">曦金</span>
+            <span class="color-en">XĪ JĪN · DAWN GOLD</span>
+          </div>
+          <div class="color-bottom">
+            <div class="color-hex">#D9BC7A</div>
+            <div class="color-rationale">破曉時的光，比銅璽更輕盈、更前瞻——專屬思想領導、新產品發布、願景陳述。</div>
+            <div class="color-psych">Psych: 下一個十年正在成為的你——尚未到達，但在路上。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · USAGE MAP -->
+  <section>
+    <div class="section-label">05 — Usage Map · 四種聲音、四種權重</div>
+    <h2 class="section-title">同一套色彩系統，四種說話方式</h2>
+    <p class="section-intro">色彩系統的價值不在於顏色本身，而在於它能幫你「在不同場合說不同的話、而聲音仍是同一個你」。以下四種聲音模式覆蓋你 90% 的交付場景。</p>
+
+    <div class="usage-grid">
+      <div class="usage-card c1">
+        <div class="usage-card-title">個人聲音</div>
+        <div class="usage-card-en">Personal Voice</div>
+        <div class="usage-weights">
+          <div class="uw" style="background:#1B1612;flex:3;"></div>
+          <div class="uw" style="background:#A0604A;flex:3;"></div>
+          <div class="uw" style="background:#EDE4D3;flex:2;"></div>
+          <div class="uw" style="background:#8B7E6B;flex:1;"></div>
+          <div class="uw" style="background:#9B3831;flex:1;"></div>
+        </div>
+        <ul>
+          <li>個人網站、攝影作品集</li>
+          <li>家業敘事</li>
+          <li>哲學實踐紀錄</li>
+          <li>媒體人物訪談視覺</li>
+        </ul>
+      </div>
+
+      <div class="usage-card c2">
+        <div class="usage-card-title">顧問聲音</div>
+        <div class="usage-card-en">NarraTect Voice</div>
+        <div class="usage-weights">
+          <div class="uw" style="background:#1B1612;flex:4;"></div>
+          <div class="uw" style="background:#EDE4D3;flex:2;"></div>
+          <div class="uw" style="background:#B8893F;flex:2;"></div>
+          <div class="uw" style="background:#8B7E6B;flex:1;"></div>
+          <div class="uw" style="background:#9B3831;flex:1;"></div>
+        </div>
+        <ul>
+          <li>顧問提案／方法論專刊</li>
+          <li>合約、印信、署名文件</li>
+          <li>Notion 專案 header</li>
+          <li>企業訓練教材封面</li>
+        </ul>
+      </div>
+
+      <div class="usage-card c3">
+        <div class="usage-card-title">媒體聲音</div>
+        <div class="usage-card-en">Publishable Voice</div>
+        <div class="usage-weights">
+          <div class="uw" style="background:#EDE4D3;flex:4;"></div>
+          <div class="uw" style="background:#1B1612;flex:3;"></div>
+          <div class="uw" style="background:#9B3831;flex:1;"></div>
+          <div class="uw" style="background:#B8893F;flex:1;"></div>
+          <div class="uw" style="background:#8B7E6B;flex:1;"></div>
+        </div>
+        <ul>
+          <li>新聞稿、專欄、白皮書</li>
+          <li>商業媒體刊登版面</li>
+          <li>永續報告／合規交付</li>
+          <li>LinkedIn 長文</li>
+        </ul>
+      </div>
+
+      <div class="usage-card c4">
+        <div class="usage-card-title">前瞻聲音</div>
+        <div class="usage-card-en">Horizon Voice</div>
+        <div class="usage-weights">
+          <div class="uw" style="background:#1B1612;flex:3;"></div>
+          <div class="uw" style="background:#D9BC7A;flex:3;"></div>
+          <div class="uw" style="background:#B8893F;flex:2;"></div>
+          <div class="uw" style="background:#EDE4D3;flex:1;"></div>
+          <div class="uw" style="background:#A0604A;flex:1;"></div>
+        </div>
+        <ul>
+          <li>變革與轉型願景簡報</li>
+          <li>Keynote 封面、大型演講視覺</li>
+          <li>板級／投資人陳述</li>
+          <li>新產品／新服務發布</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · APPLICATIONS -->
+  <section>
+    <div class="section-label">06 — Applications · 三種時態的聲音</div>
+    <h2 class="section-title">過去的媒體版面、現在的顧問對話、未來的願景陳述</h2>
+    <p class="section-intro">同一套七色，在過去／現在／未來三個時態各自說出不同的話——同一個你，三種成熟度。</p>
+
+    <div class="apps-grid">
+      <div class="app-card">
+        <div class="app-past">
+          <div class="app-body">
+            <div class="kicker">VOL. 12 — SUSTAINABILITY REPORT</div>
+            <h3>合規不是框架表格，是組織選擇留下的痕跡</h3>
+            <p>從 B4SI、IFRS、ESRS 的治理語言出發，回到利害關係人對話的本質。</p>
+            <div class="byline">Rockie Lin — 十年跨域合規／永續總覽</div>
+          </div>
+        </div>
+        <div class="app-footer"><span>過去聲音</span><span>PAST</span></div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-present">
+          <div class="app-body">
+            <div class="kicker">HCD × CHANGE &amp; TRANSFORM · 2026</div>
+            <h3>讓系統變人，讓人不被系統吞沒</h3>
+            <p>從組織變革採用的真實使用情境切入，帶你看見變革裡那個「人」的位置。</p>
+            <span class="pill">加入工作坊 →</span>
+          </div>
+        </div>
+        <div class="app-footer"><span>現在聲音</span><span>PRESENT</span></div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-future">
+          <div class="dawn-ring"></div>
+          <div class="app-body">
+            <div class="kicker">HORIZON · ADVISORY KEYNOTE</div>
+            <h3>下一個十年，顧問工作會變成什麼樣子？</h3>
+            <p>人機共作的時代，方法論本身也是會演化的生命體——NarraTect 如何押注下一程。</p>
+            <div class="ptr">2027 NarraTect Annual Outlook →</div>
+          </div>
+        </div>
+        <div class="app-footer"><span>未來聲音</span><span>FUTURE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-note">
+        <strong>關於「承器」這個名字</strong><br>
+        <strong>承</strong>不只是承接，也是「能受而不溢」——HSE 的滲透性與觀察者的節制之間的平衡。<strong>器</strong>不只是器物，在古典中文裡更指向 <em>器識</em>（判斷的眼界）、<em>器度</em>（容納的量體）、<em>君子不器</em>（不被單一角色定義）——這些正是跨傳統求道者的身分特徵：<em>參與儀式但不被吸收、學習傳統但不被歸類、對自己極高要求但不陷入自我評判</em>。<br><br>
+        <strong>東方哲學的隱形骨架</strong><br>
+        八種修習層次——倫理、自律、體位、調息、感官回收、凝神、禪定、融入——其實已經寫進這套色彩：自律是對自己的極高要求，感官回收是石溫提供的空間，凝神與禪定是觀察者意識，而所有色彩的訓練最終指向融入——主體與器物合一、承與器不再分離。<br><br>
+        <strong>反模式清單（不變）</strong><br>
+        ESG 慣性綠、科技業冷藍 + 亮橘、icon library、茜紅用於錯誤／警告、陶土與茜紅直接並置（需墨玄或亞麻白隔開）、曦金用於日常訊息。
+      </div>
+
+      <div class="footer-cta">
+        <div class="footer-cta-title">下一步 · 延伸與擴展</div>
+        <p class="footer-cta-desc">完整延伸工作項目已整理為獨立路線圖——七個階段、三十五項具體工作，涵蓋基礎完成度到文化傳承的長期視野。</p>
+        <a href="/roadmap" class="footer-cta-link">
+          <span>前往路線圖</span>
+          <span class="arrow">→</span>
+        </a>
+        <div class="footer-cta-meta">INTERNAL · PASSWORD PROTECTED</div>
+      </div>
+    </div>
+
+    <div class="ip-footer">
+      © 2026 NARRATECT ADVISORY. ALL RIGHTS RESERVED. "承器 · CHÉNG QÌ" BRAND COLOR SYSTEM IS THE IP OF NARRATECT ADVISORY AND PROTECTED BY COPYRIGHT LAW. UNAUTHORIZED REPRODUCTION, DISTRIBUTION, OR COMMERCIAL USE IS PROHIBITED. FOR LICENSING, COLLABORATION, OR PERMISSION TO REUSE, WRITE TO ROCKWAY.LIN@GMAIL.COM.
+    </div>
+  </footer>
+
+</div>
+
+<div class="copy-toast" id="toast"></div>
+
+<script>
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  document.querySelectorAll('[data-hex]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const hex = el.getAttribute('data-hex');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(hex).then(() => {
+          clearTimeout(toastTimer);
+          toast.textContent = '已複製 ' + hex;
+          toast.classList.add('show');
+          toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+        }).catch(() => {
+          toast.textContent = hex;
+          toast.classList.add('show');
+          toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

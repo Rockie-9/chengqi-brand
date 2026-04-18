@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>承器 · Roadmap</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #1B1612;
+    --ink-deep: #0E0B09;
+    --ink-2: #221C17;
+    --ink-3: #2D2621;
+    --clay: #A0604A;
+    --madder: #9B3831;
+    --brass: #B8893F;
+    --dawn: #D9BC7A;
+    --linen: #EDE4D3;
+    --stone: #8B7E6B;
+    --line: rgba(237, 228, 211, 0.10);
+    --line-strong: rgba(237, 228, 211, 0.22);
+    --dim: rgba(237, 228, 211, 0.55);
+    --dimmer: rgba(237, 228, 211, 0.35);
+  }
+  body {
+    background: var(--ink);
+    color: var(--linen);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    font-feature-settings: 'palt';
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ━━━━━ PASSWORD GATE ━━━━━ */
+  .gate {
+    position: fixed; inset: 0; z-index: 999;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.4s ease;
+  }
+  .gate.hidden { opacity: 0; pointer-events: none; }
+  .gate-mark {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 120px; font-weight: 500;
+    color: var(--linen);
+    line-height: 0.85; letter-spacing: 0.08em;
+    margin-bottom: 48px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gate-mark .bar {
+    width: 3px; height: 60px;
+    background: var(--madder);
+    margin: 0 10px;
+  }
+  .gate-mark .second { color: var(--brass); }
+  .gate-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.35em;
+    color: var(--dim); text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .gate-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px; color: var(--linen);
+    letter-spacing: 0.08em; margin-bottom: 32px;
+  }
+  .gate-form {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 4px;
+  }
+  .gate-form input {
+    background: transparent; border: none; outline: none;
+    color: var(--linen);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; letter-spacing: 0.3em;
+    padding: 10px 4px; width: 180px;
+    text-align: center;
+  }
+  .gate-form input::placeholder {
+    color: var(--dimmer); letter-spacing: 0.2em; font-size: 13px;
+  }
+  .gate-form button {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--brass);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.25em;
+    padding: 10px 16px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .gate-form button:hover { color: var(--dawn); }
+  .gate-error {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--madder);
+    letter-spacing: 0.15em;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .gate-error.show { opacity: 1; }
+  .gate-footnote {
+    position: absolute; bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--dimmer);
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+
+  /* ━━━━━ CONTENT ━━━━━ */
+  .content {
+    display: none;
+    padding: 64px 32px;
+  }
+  .content.shown { display: block; }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .hero-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.35em;
+    color: var(--dim); text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hero-kicker::before {
+    content: ''; width: 24px; height: 1px; background: var(--madder);
+  }
+  .hero-kicker .confidential {
+    color: var(--madder); font-weight: 500;
+  }
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(28px, 3.5vw, 40px); font-weight: 500;
+    color: var(--linen); line-height: 1.25;
+    letter-spacing: 0.04em; margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-style: italic; font-size: 17px;
+    color: var(--brass); letter-spacing: 0.05em;
+    margin-bottom: 28px;
+  }
+  .hero-desc {
+    font-size: 14px; color: var(--dim);
+    line-height: 1.85; max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .hero-desc strong { color: var(--linen); font-weight: 500; }
+
+  /* SUMMARY STATS */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 800px) {
+    .summary { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat {
+    background: var(--ink-2);
+    padding: 20px 18px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--dim); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 28px; color: var(--linen);
+    letter-spacing: 0.05em;
+  }
+  .stat-value .small {
+    font-size: 12px; color: var(--dim); margin-left: 6px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    padding: 20px 0 8px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+    margin-top: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+  .legend-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .legend-chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+  .legend-group {
+    display: flex; gap: 14px;
+    padding-right: 20px; border-right: 1px solid var(--line);
+  }
+  .legend-group:last-child { border-right: none; }
+
+  /* PHASE */
+  .phase {
+    margin-bottom: 56px;
+  }
+  .phase-header {
+    display: flex; align-items: baseline; gap: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .phase-header::before {
+    content: ''; position: absolute;
+    left: -32px; top: 0; bottom: 12px;
+    width: 3px;
+  }
+  .phase.p1 .phase-header::before { background: var(--linen); }
+  .phase.p2 .phase-header::before { background: var(--clay); }
+  .phase.p3 .phase-header::before { background: var(--madder); }
+  .phase.p4 .phase-header::before { background: var(--brass); }
+  .phase.p5 .phase-header::before { background: var(--dawn); }
+  .phase.p6 .phase-header::before { background: var(--stone); }
+  .phase.p7 .phase-header::before { background: var(--dimmer); }
+
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em;
+    color: var(--dim); text-transform: uppercase;
+  }
+  .phase-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px; color: var(--linen);
+    letter-spacing: 0.06em; font-weight: 500;
+  }
+  .phase-timeframe {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--brass); text-transform: uppercase;
+  }
+  .phase-intro {
+    font-family: 'Noto Serif TC', serif;
+    font-style: italic; font-size: 14px;
+    color: var(--dim); margin-bottom: 24px;
+    max-width: 640px;
+  }
+
+  /* ITEM LIST */
+  .items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .item {
+    background: var(--ink-2);
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 20px;
+    align-items: start;
+    transition: background 0.2s;
+  }
+  .item:hover { background: var(--ink-3); }
+  @media (max-width: 800px) {
+    .item { grid-template-columns: 50px 1fr; }
+    .item .item-tags { grid-column: 1 / -1; margin-top: 8px; }
+  }
+  .item-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--dim);
+    letter-spacing: 0.1em;
+    padding-top: 3px;
+  }
+  .item-main { }
+  .item-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px; color: var(--linen);
+    letter-spacing: 0.04em; margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .item-title .en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--dim);
+    letter-spacing: 0.15em; margin-left: 10px;
+    font-weight: 400; text-transform: uppercase;
+  }
+  .item-desc {
+    font-size: 12px; color: var(--dim);
+    line-height: 1.7;
+  }
+  .item-tags {
+    display: flex; gap: 6px;
+    padding-top: 4px;
+  }
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+  .chip.p0 { color: var(--madder); border-color: var(--madder); }
+  .chip.p1 { color: var(--brass); border-color: var(--brass); }
+  .chip.p2 { color: var(--clay); border-color: var(--clay); }
+  .chip.p3 { color: var(--stone); border-color: var(--stone); }
+  .chip.s { color: var(--dim); border-color: var(--line-strong); }
+  .chip.m { color: var(--linen); border-color: var(--line-strong); }
+  .chip.l { color: var(--dawn); border-color: var(--dawn); }
+  .chip.xl { color: var(--brass); border-color: var(--brass); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 72px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .footer-note {
+    font-size: 12px; color: var(--dim);
+    line-height: 1.8;
+    max-width: 760px;
+    margin-bottom: 32px;
+  }
+  .footer-note strong {
+    color: var(--linen);
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 500;
+  }
+  .ip-footer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--dimmer);
+    letter-spacing: 0.15em; line-height: 1.8;
+    padding-top: 20px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* HOME BACK LINK */
+  .home-back {
+    position: fixed; top: 24px; left: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--dim); text-transform: uppercase;
+    cursor: pointer; text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid var(--line-strong);
+    background: var(--ink-2);
+    transition: all 0.2s;
+    z-index: 1000;
+  }
+  .home-back:hover {
+    color: var(--brass);
+    border-color: var(--brass);
+  }
+
+  /* LOGOUT */
+  .logout {
+    position: fixed; top: 24px; right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--dimmer); text-transform: uppercase;
+    cursor: pointer; text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-2);
+    transition: all 0.2s;
+    z-index: 10;
+  }
+  .logout:hover { color: var(--linen); border-color: var(--line-strong); }
+</style>
+</head>
+<body>
+
+<!-- 永遠可見的返回主頁連結，無論 gate 開啟或關閉 -->
+<a href="/" class="home-back">← 返回主頁</a>
+
+<!-- ═══════════ PASSWORD GATE ═══════════ -->
+<div class="gate" id="gate">
+  <div class="gate-mark">
+    <span>承</span>
+    <div class="bar"></div>
+    <span class="second">器</span>
+  </div>
+  <div class="gate-kicker">INTERNAL DOCUMENT · CONFIDENTIAL</div>
+  <div class="gate-title">延伸與擴展路線圖</div>
+  <form class="gate-form" onsubmit="return tryUnlock(event)">
+    <input type="password" id="pw" placeholder="PASSWORD" autofocus autocomplete="off">
+    <button type="submit">Unlock →</button>
+  </form>
+  <div class="gate-error" id="err">INCORRECT · TRY AGAIN</div>
+  <div class="gate-footnote">© 2026 NARRATECT ADVISORY</div>
+</div>
+
+<!-- ═══════════ CONTENT ═══════════ -->
+<div class="content" id="content">
+<a href="#" class="logout" onclick="lock();return false;">Lock →</a>
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-kicker">
+      <span>ROADMAP · INTERNAL</span>
+      <span class="confidential">· CONFIDENTIAL</span>
+    </div>
+    <h1 class="hero-title">承器 · 延伸與擴展路線圖</h1>
+    <div class="hero-sub">Extension & Expansion Work Items · 2026 → 2034</div>
+    <p class="hero-desc">承器品牌色彩系統已完成定版，並以下一程的長弧為視角，展開七個階段、三十五個工作項目的延伸計畫。本路線圖不是全部必做，而是<strong>可選擇性展開的地圖</strong>——P0 為不可省略的基礎、P3 為選擇性擴展；S/M/L/XL 為工作量估計。階段可並行、可跳躍，依資源與時機調度。</p>
+
+    <div class="summary">
+      <div class="stat">
+        <div class="stat-label">Total Items</div>
+        <div class="stat-value">35</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Phases</div>
+        <div class="stat-value">7</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Priority P0</div>
+        <div class="stat-value">8 <span class="small">Essential</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Priority P1</div>
+        <div class="stat-value">14 <span class="small">Important</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">P2 + P3</div>
+        <div class="stat-value">13 <span class="small">Optional</span></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-group">
+        <span class="legend-chip"><span class="dot" style="background:var(--madder);"></span>P0 Essential</span>
+        <span class="legend-chip"><span class="dot" style="background:var(--brass);"></span>P1 Important</span>
+        <span class="legend-chip"><span class="dot" style="background:var(--clay);"></span>P2 Value-add</span>
+        <span class="legend-chip"><span class="dot" style="background:var(--stone);"></span>P3 Optional</span>
+      </div>
+      <div class="legend-group">
+        <span class="legend-chip">S · 1-3 days</span>
+        <span class="legend-chip">M · 1-2 weeks</span>
+        <span class="legend-chip">L · 1 month+</span>
+        <span class="legend-chip">XL · multi-month</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 1 · 基礎完成度 ═══ -->
+  <section class="phase p1">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 01</span>
+      <span class="phase-title">基礎完成度</span>
+      <span class="phase-timeframe">0-30 days</span>
+    </div>
+    <p class="phase-intro">Foundation Completion — 把品牌系統的地基收平，所有後續擴展都依賴這五項產出。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">1.1</div>
+        <div class="item-main">
+          <div class="item-title">Color Token 完整規格書 <span class="en">COLOR TOKEN SPEC</span></div>
+          <div class="item-desc">HCT tonal scale × 13 階 × 7 色 = 91 個精確色值，涵蓋 light/dark mode、hover/pressed/disabled 狀態、focus ring。輸出 JSON + CSS Variables + Tailwind config + Figma variables 五格式。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">1.2</div>
+        <div class="item-main">
+          <div class="item-title">Typography Pairing 系統 <span class="en">TYPE PAIRING</span></div>
+          <div class="item-desc">Noto Serif TC / Inter / JetBrains Mono 的使用規則、type scale（H1–H6 + body + mono + caption）、CJK vs Latin 字距、Outlook-safe 信件排版規則。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip s">S</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">1.3</div>
+        <div class="item-main">
+          <div class="item-title">Brand Voice × Color Map <span class="en">VOICE × COLOR</span></div>
+          <div class="item-desc">每個色彩對應的語氣、場景、用詞、禁區。四種聲音模式（個人 / 顧問 / 媒體 / 前瞻）的具體語彙庫，TC/EN 雙語對照。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">1.4</div>
+        <div class="item-main">
+          <div class="item-title">反模式手冊 <span class="en">ANTI-PATTERN GUIDE</span></div>
+          <div class="item-desc">20-30 個「不該這樣做」的具體情境——色彩誤用、字體誤用、排版誤用、聲音誤用。也作為 AI 協作時的對齊指南。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip s">S</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">1.5</div>
+        <div class="item-main">
+          <div class="item-title">設計變數輸出 <span class="en">DESIGN VARIABLES</span></div>
+          <div class="item-desc">tailwind.config.js、:root{} CSS、Figma variables JSON——可直接 drop-in 任何 Next.js / React / Figma 專案。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip s">S</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 2 · 身份延伸 ═══ -->
+  <section class="phase p2">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 02</span>
+      <span class="phase-title">身份延伸</span>
+      <span class="phase-timeframe">30-90 days</span>
+    </div>
+    <p class="phase-intro">Identity Extension — 從色彩延伸到完整視覺身份，讓品牌有形狀而非只有調性。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">2.1</div>
+        <div class="item-main">
+          <div class="item-title">Logo / Wordmark 系統 <span class="en">LOGO SYSTEM</span></div>
+          <div class="item-desc">承器主視覺標記（字符 + 幾何）、NarraTect Advisory 企業標記、Rockie 個人署名標記，以及三者之間的使用規則與共存邏輯。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">2.2</div>
+        <div class="item-main">
+          <div class="item-title">自訂 SVG 符號詞彙 <span class="en">CUSTOM SVG VOCABULARY</span></div>
+          <div class="item-desc">因應「不使用 icon library」原則，建立 40-60 個可重複使用的幾何符號。分類：方向、狀態、類別、動作。所有未來交付物共用。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">2.3</div>
+        <div class="item-main">
+          <div class="item-title">攝影方向指南 <span class="en">PHOTO DIRECTION</span></div>
+          <div class="item-desc">個人攝影作為品牌資產的使用規則——光線、構圖、色溫、後製風格。人像、場景、物件三種子類。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">2.4</div>
+        <div class="item-main">
+          <div class="item-title">排灣幾何圖樣庫 <span class="en">PAIWAN PATTERN LIBRARY</span></div>
+          <div class="item-desc">從現有視覺 token 擴展為完整 pattern library，可作為書封、信封、包裝、橫幅裝飾。包含文化敏感度自審流程。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">2.5</div>
+        <div class="item-main">
+          <div class="item-title">印刷品系統 <span class="en">PRINT COLLATERAL</span></div>
+          <div class="item-desc">信頭、信封、發票模板；名片系統（個人 × NarraTect × 雙面）；包裝、貼紙、印章規格與輸出檔。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 3 · 對外應用 ═══ -->
+  <section class="phase p3">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 03</span>
+      <span class="phase-title">對外應用</span>
+      <span class="phase-timeframe">90-180 days</span>
+    </div>
+    <p class="phase-intro">Outward Applications — 所有外部可見的品牌觸點，讓市場能辨認、記得、回訪。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">3.1</div>
+        <div class="item-main">
+          <div class="item-title">NarraTect Advisory 官方網站 <span class="en">NARRATECT SITE</span></div>
+          <div class="item-desc">Next.js + 承器設計系統。方法論展示、顧問服務、案例、聯絡。雙語 TC/EN、可申請合作的前台流程。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip xl">XL</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">3.2</div>
+        <div class="item-main">
+          <div class="item-title">個人作品集進化 <span class="en">PERSONAL PORTFOLIO</span></div>
+          <div class="item-desc">從現有 dark-canvas profile 升級為承器版本——攝影作品 × 顧問交付物 × 思想文章三層結構。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">3.3</div>
+        <div class="item-main">
+          <div class="item-title">電子報模板升級 <span class="en">NEWSLETTER UPGRADE</span></div>
+          <div class="item-desc">現有新聞報刊系統套入承器色彩。Outlook-safe MJML 版本、六語言並行、RSS + email 雙發送。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">3.4</div>
+        <div class="item-main">
+          <div class="item-title">LinkedIn / 社群視覺系統 <span class="en">SOCIAL VISUAL KIT</span></div>
+          <div class="item-desc">Header banner、貼文模板、Article 封面。保持各平台演算法的最佳寬高比，與承器一致的視覺語彙。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">3.5</div>
+        <div class="item-main">
+          <div class="item-title">Keynote / Deck 主模板 <span class="en">KEYNOTE MASTER</span></div>
+          <div class="item-desc">涵蓋 10 種內建情境（開場、論點、案例、數據、CTA、致謝...）的 master slide。中英雙語版本、PPTX + Keynote 雙格式。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">3.6</div>
+        <div class="item-main">
+          <div class="item-title">案例研究模板 <span class="en">CASE STUDY TEMPLATE</span></div>
+          <div class="item-desc">顧問案例的標準呈現格式。前置條件 / 介入 / 結果 / 學習四段結構，可匿名化版本。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 4 · 體驗與觸點 ═══ -->
+  <section class="phase p4">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 04</span>
+      <span class="phase-title">體驗與觸點</span>
+      <span class="phase-timeframe">180+ days</span>
+    </div>
+    <p class="phase-intro">Experience & Touchpoints — 客戶旅程中的每個微時刻，從啟動到告別都有承器的手感。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">4.1</div>
+        <div class="item-main">
+          <div class="item-title">客戶啟動包 <span class="en">ONBOARDING PACKET</span></div>
+          <div class="item-desc">首次合作的歡迎文件。包含方法論簡介、合作節奏、溝通規範、首次提案模板。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">4.2</div>
+        <div class="item-main">
+          <div class="item-title">工作坊 / 訓練教材系統 <span class="en">WORKSHOP KIT</span></div>
+          <div class="item-desc">講義封面、白板模板、練習表、回饋表。適用 LUMA / HCD / 變革採用三種場景。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">4.3</div>
+        <div class="item-main">
+          <div class="item-title">提案書系統 <span class="en">PROPOSAL SYSTEM</span></div>
+          <div class="item-desc">顧問提案的標準格式。Executive summary、範疇、交付物、報價、時程的五段式結構，支持 PDF / 線上兩種形式。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">4.4</div>
+        <div class="item-main">
+          <div class="item-title">信件與簽名系統 <span class="en">CORRESPONDENCE</span></div>
+          <div class="item-desc">Email signature（正式版 / 快速版）。常用信件模板——寒暄、跟進、拒絕、推薦四大類。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip s">S</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">4.5</div>
+        <div class="item-main">
+          <div class="item-title">禮品 / 儀式包 <span class="en">GIFT & CEREMONY</span></div>
+          <div class="item-desc">客戶週年、合作啟動、感謝禮。結合家業敘事、工藝質感、承器色系。每年固定兩檔設計。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip m">M</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 5 · 思想資產化 ═══ -->
+  <section class="phase p5">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 05</span>
+      <span class="phase-title">思想資產化</span>
+      <span class="phase-timeframe">Long-term</span>
+    </div>
+    <p class="phase-intro">IP Assetization — 把你已經在做的，變成可以被引用、被授權、被傳承的資產。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">5.1</div>
+        <div class="item-main">
+          <div class="item-title">承器方法論白皮書 <span class="en">METHODOLOGY PAPER</span></div>
+          <div class="item-desc">把這整套色彩哲學擴寫為可引用的編輯級出版品。TC/EN 雙語、PDF 與印刷雙輸出，長期可考慮 ISBN。</div>
+        </div>
+        <div class="item-tags"><span class="chip p0">P0</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">5.2</div>
+        <div class="item-main">
+          <div class="item-title">IP / 商標保護 <span class="en">TRADEMARK</span></div>
+          <div class="item-desc">「承器」「NarraTect」「個人署名」的商標申請。台灣 + 美國 + 歐盟的基本覆蓋，優先順序依據合作市場。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">5.3</div>
+        <div class="item-main">
+          <div class="item-title">思想領導出版平台 <span class="en">EDITORIAL PLATFORM</span></div>
+          <div class="item-desc">NarraTect 官網下的 editorial 層。月刊或季刊節奏、TC/EN 雙版、可訂閱、RSS + email。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">5.4</div>
+        <div class="item-main">
+          <div class="item-title">雙語出版計畫 <span class="en">BILINGUAL PUBLICATION</span></div>
+          <div class="item-desc">長期寫作計畫轉為書籍 / 專欄。主題方向——跨傳統求道、人本設計、組織變革敘事。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip xl">XL</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">5.5</div>
+        <div class="item-main">
+          <div class="item-title">板級定位資料集 <span class="en">BOARD POSITIONING</span></div>
+          <div class="item-desc">為未來進入董事會所需的背景資料庫——經歷、著作、演講、顧問案例、推薦人系統。</div>
+        </div>
+        <div class="item-tags"><span class="chip p1">P1</span><span class="chip m">M</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 6 · 系統整合 ═══ -->
+  <section class="phase p6">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 06</span>
+      <span class="phase-title">系統整合</span>
+      <span class="phase-timeframe">Long-term</span>
+    </div>
+    <p class="phase-intro">Ecosystem Integration — 讓 AI 與工具鏈都認得你的品牌，不是事後套皮而是系統級對齊。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">6.1</div>
+        <div class="item-main">
+          <div class="item-title">Notion 工作區視覺升級 <span class="en">NOTION RESKIN</span></div>
+          <div class="item-desc">把現有知識系統、資料庫、專案全部套入承器。模板升級、emoji 替換為自訂 SVG、icon 統一。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">6.2</div>
+        <div class="item-main">
+          <div class="item-title">n8n 工作流視覺系統 <span class="en">N8N VISUAL</span></div>
+          <div class="item-desc">Workflow 通知、報告、摘要的品牌化輸出。即使是內部自動化，輸出品質也保持編輯級。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip s">S</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">6.3</div>
+        <div class="item-main">
+          <div class="item-title">AI Agent 視覺人格 <span class="en">AI PERSONA UI</span></div>
+          <div class="item-desc">未來顧問 AI agent 的 UI persona。對話介面、回覆風格、視覺語彙。為客戶端自動化體驗預留設計容器。</div>
+        </div>
+        <div class="item-tags"><span class="chip p2">P2</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">6.4</div>
+        <div class="item-main">
+          <div class="item-title">Slack / Teams 身分系統 <span class="en">MESSAGING IDENTITY</span></div>
+          <div class="item-desc">Emoji 集、狀態訊息模板、署名規範。跨組織協作時的一致性。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip s">S</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">6.5</div>
+        <div class="item-main">
+          <div class="item-title">GitHub / 開發工具品牌化 <span class="en">DEV TOOL BRANDING</span></div>
+          <div class="item-desc">Profile README、Repo banner、Organization 設定。對開發者社群與技術合作夥伴的可見度。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip s">S</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 7 · 文化與傳承 ═══ -->
+  <section class="phase p7">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 07</span>
+      <span class="phase-title">文化與傳承</span>
+      <span class="phase-timeframe">Selective · Long-term</span>
+    </div>
+    <p class="phase-intro">Heritage & Cultural Transmission — 品牌之外的延伸，是否展開完全選擇性，不展開也不影響核心系統。</p>
+    <div class="items">
+      <div class="item">
+        <div class="item-code">7.1</div>
+        <div class="item-main">
+          <div class="item-title">家業視覺系統 <span class="en">FAMILY BUSINESS SYSTEM</span></div>
+          <div class="item-desc">若家業承接發生，為其建立承器分支品牌。包裝、店面、線上通路的視覺語彙。共用承器基因但有獨立身份。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">7.2</div>
+        <div class="item-main">
+          <div class="item-title">服務 / 公益計畫識別 <span class="en">SERVICE INITIATIVE</span></div>
+          <div class="item-desc">後續公益或文化計畫的視覺延伸。共用承器但放寬色彩比例，讓對象有主體性。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">7.3</div>
+        <div class="item-main">
+          <div class="item-title">跨傳統哲學寫作平台 <span class="en">PHILOSOPHY PLATFORM</span></div>
+          <div class="item-desc">長期寫作計畫——跨傳統哲學觀察。可能演化為獨立子品牌，視內容深度與發表頻率而定。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip l">L</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">7.4</div>
+        <div class="item-main">
+          <div class="item-title">攝影 / 旅行紀錄專案 <span class="en">PHOTO / TRAVEL PROJECT</span></div>
+          <div class="item-desc">個人攝影作品的承器應用——旅行紀錄、展覽合作、出版合作的視覺基礎。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip m">M</span></div>
+      </div>
+      <div class="item">
+        <div class="item-code">7.5</div>
+        <div class="item-main">
+          <div class="item-title">雙語出版實驗 <span class="en">BILINGUAL EXPERIMENTS</span></div>
+          <div class="item-desc">短篇、隨筆、觀察的定期發表。以承器為視覺容器的長期發表計畫，可能滋養 Phase 5 的正式出版。</div>
+        </div>
+        <div class="item-tags"><span class="chip p3">P3</span><span class="chip l">L</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-note">
+      <strong>使用說明</strong> · 這份路線圖是活文件，不是合約。優先順序可隨著市場信號、個人能量、合作機會調整。P0 項目是品牌系統真正成熟所需的最小可行集合，建議優先。P3 項目是生涯光譜的可能延伸，選擇性展開或完全不展開都合理。<br><br>
+      <strong>閱讀建議</strong> · 每季初重讀一次，問三個問題——(1) 上一季完成了什麼？(2) 下一季想動哪一項？(3) 有沒有新的項目該加進來？這份文件應該每年至少更新一次版本。<br><br>
+      <strong>密碼管理</strong> · 此頁面使用客戶端密碼保護（sessionStorage）。適合個人 / 小圈子使用，不適合存放敏感商業機密。若未來需要更強保護，可升級為 Vercel Password Protection 或 Cloudflare Access（需 Pro/Enterprise 方案）。
+    </div>
+    <div class="ip-footer">
+      © 2026 NARRATECT ADVISORY. ALL RIGHTS RESERVED. INTERNAL ROADMAP · CONFIDENTIAL.
+      THIS DOCUMENT IS THE IP OF NARRATECT ADVISORY AND PROTECTED BY COPYRIGHT LAW.
+      UNAUTHORIZED REPRODUCTION, DISTRIBUTION, OR DISCLOSURE IS PROHIBITED.
+    </div>
+  </footer>
+
+</div>
+</div>
+
+<script>
+  const GATE_KEY = 'chengqi_unlock_2026';
+
+  function tryUnlock(e) {
+    e.preventDefault();
+    const pw = document.getElementById('pw').value;
+    const err = document.getElementById('err');
+    if (pw === '0916') {
+      sessionStorage.setItem(GATE_KEY, '1');
+      showContent();
+    } else {
+      err.classList.add('show');
+      document.getElementById('pw').value = '';
+      setTimeout(() => err.classList.remove('show'), 2000);
+    }
+    return false;
+  }
+
+  function showContent() {
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    gate.classList.add('hidden');
+    content.classList.add('shown');
+    setTimeout(() => { gate.style.display = 'none'; }, 400);
+  }
+
+  function lock() {
+    sessionStorage.removeItem(GATE_KEY);
+    location.reload();
+  }
+
+  // Auto-unlock if already authenticated this session
+  if (sessionStorage.getItem(GATE_KEY) === '1') {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('content').classList.add('shown');
+  }
+</script>
+
+</body>
+</html>
