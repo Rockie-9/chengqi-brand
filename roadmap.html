@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>承器 · Roadmap</title>
+<title>承器 · 路線圖</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -508,7 +508,7 @@
 <body>
 
 <!-- 永遠可見的返回主頁連結，無論 gate 開啟或關閉 -->
-<a href="/" class="home-back" aria-label="返回主頁 · Back to home">← 返回主頁</a>
+<a href="/" class="home-back" aria-label="返回主頁">← 返回主頁</a>
 
 <!-- ═══════════ PASSWORD GATE ═══════════ -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-kicker">
@@ -519,9 +519,9 @@
   </div>
   <div class="gate-kicker" id="gate-kicker">INTERNAL DOCUMENT · CONFIDENTIAL</div>
   <div class="gate-title" id="gate-title">延伸與擴展路線圖</div>
-  <form class="gate-form" onsubmit="return tryUnlock(event)" aria-label="Password unlock form">
+  <form class="gate-form" onsubmit="return tryUnlock(event)" aria-label="密碼解鎖表單">
     <label for="pw" class="visually-hidden">Password</label>
-    <input type="password" id="pw" placeholder="PASSWORD" autofocus autocomplete="off" aria-label="Enter password to unlock roadmap" aria-describedby="err">
+    <input type="password" id="pw" placeholder="PASSWORD" autofocus autocomplete="off" aria-label="輸入密碼解鎖路線圖" aria-describedby="err">
     <button type="submit">Unlock →</button>
   </form>
   <div class="gate-error" id="err" role="alert" aria-live="assertive">INCORRECT · TRY AGAIN</div>
@@ -529,8 +529,8 @@
 </div>
 
 <!-- ═══════════ CONTENT ═══════════ -->
-<div class="content" id="content" aria-label="Roadmap content">
-<a href="#" class="logout" onclick="lock();return false;" aria-label="Lock roadmap and re-enter password">Lock →</a>
+<div class="content" id="content" aria-label="路線圖內容">
+<a href="#" class="logout" onclick="lock();return false;" aria-label="重新鎖定路線圖">Lock →</a>
 <div class="container">
 
   <!-- HERO -->
