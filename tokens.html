@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>承器 · Color Tokens in Context</title>
+<meta name="description" content="四個情境、八個樣張，讓承器色彩系統從色票走進真實應用。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   SEMANTIC TOKEN LAYER · PHASE B DRAFT
+   ───────────────────────────────────────────────────────────────────────
+   Atomic tokens (from Phase A) map to semantic roles used in real UI.
+   Each sample below uses only semantic tokens, never atomic tokens directly.
+   This is how tokens should flow:
+     Atomic (ink.20) → Semantic (surface.elevated) → Component (card bg)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── ATOMIC (anchor values from Phase A) ────────────────────── */
+  --atom-ink-base:     #1B1612;
+  --atom-ink-2:        #221C17;   /* ≈ ink.10 */
+  --atom-ink-3:        #2D2621;   /* ≈ ink.20 */
+  --atom-linen-base:   #EDE4D3;
+  --atom-linen-deep:   #E0D5BE;
+  --atom-stone-base:   #8B7E6B;
+  --atom-clay-base:    #A0604A;
+  --atom-madder-base:  #9B3831;
+  --atom-brass-base:   #B8893F;
+  --atom-dawn-base:    #D9BC7A;
+
+  /* ── SEMANTIC · Surface ─────────────────────────────────────── */
+  --surface-canvas:      var(--atom-ink-base);
+  --surface-elevated:    var(--atom-ink-2);
+  --surface-elevated-2:  var(--atom-ink-3);
+
+  /* ── SEMANTIC · Text ────────────────────────────────────────── */
+  --text-primary:        var(--atom-linen-base);
+  --text-secondary:      rgba(237, 228, 211, 0.70);
+  --text-tertiary:       rgba(237, 228, 211, 0.50);
+  --text-meta:           rgba(237, 228, 211, 0.35);
+
+  /* ── SEMANTIC · Border ──────────────────────────────────────── */
+  --border-subtle:       rgba(237, 228, 211, 0.10);
+  --border-default:      rgba(237, 228, 211, 0.18);
+  --border-strong:       rgba(237, 228, 211, 0.30);
+
+  /* ── SEMANTIC · Accent (role-based) ─────────────────────────── */
+  --accent-commitment:   var(--atom-brass-base);   /* CTA, commitments */
+  --accent-emergence:    var(--atom-dawn-base);    /* future / highlight */
+  --accent-conviction:   var(--atom-madder-base);  /* emphasis, conviction spine */
+  --accent-human:        var(--atom-clay-base);    /* human-centered accent */
+  --accent-stillness:    var(--atom-stone-base);   /* compliance, meta structure */
+
+  /* ── SEMANTIC · Interactive States ──────────────────────────── */
+  --state-hover-bg:      var(--atom-ink-3);
+  --state-focus-ring:    var(--atom-brass-base);
+
+  /* ── SPACING SCALE ──────────────────────────────────────────── */
+  --s-1: 4px;  --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+  --s-5: 20px; --s-6: 24px;  --s-8: 32px;  --s-10: 40px;
+  --s-12: 48px;--s-16: 64px; --s-18: 72px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+:focus-visible { outline: 2px solid var(--state-focus-ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+body {
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  font-feature-settings: 'palt';
+  line-height: 1.7;
+  min-height: 100vh;
+  padding: 64px 32px;
+}
+@media (max-width: 900px) { body { padding: 48px 24px; } }
+@media (max-width: 640px) { body { padding: 32px 16px; } }
+
+.container { max-width: 1280px; margin: 0 auto; }
+
+/* ━━━━━ PAGE HEADER ━━━━━ */
+.page-head {
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 64px;
+}
+.page-nav {
+  display: flex; gap: 24px; margin-bottom: 32px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.page-nav a {
+  color: var(--text-meta); text-decoration: none;
+  padding: 6px 12px; border: 1px solid var(--border-subtle);
+  background: var(--surface-elevated); transition: all 0.2s;
+}
+.page-nav a:hover { color: var(--accent-commitment); border-color: var(--accent-commitment); }
+
+.page-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.3em; color: var(--text-tertiary);
+  text-transform: uppercase; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.page-kicker::before { content: ''; width: 32px; height: 1px; background: var(--accent-commitment); }
+
+.page-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(28px, 4vw, 44px); font-weight: 500;
+  letter-spacing: 0.04em; line-height: 1.25;
+  margin-bottom: 12px;
+}
+.page-sub {
+  font-family: 'Noto Serif TC', serif; font-style: italic;
+  font-size: 17px; color: var(--accent-commitment);
+  margin-bottom: 32px;
+}
+.page-desc {
+  font-size: 14px; color: var(--text-secondary);
+  line-height: 1.85; max-width: 720px; margin-bottom: 32px;
+}
+.page-desc strong { color: var(--text-primary); font-weight: 500; }
+
+.reading-guide {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 24px 28px; margin-top: 32px;
+}
+.reading-guide h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-emergence); margin-bottom: 16px;
+}
+.reading-guide ol {
+  list-style: none; counter-reset: guide;
+  font-size: 13px; color: var(--text-secondary); line-height: 1.8;
+}
+.reading-guide li {
+  counter-increment: guide;
+  padding-left: 32px; position: relative; margin-bottom: 8px;
+}
+.reading-guide li::before {
+  content: counter(guide, decimal-leading-zero);
+  position: absolute; left: 0; top: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--accent-commitment);
+  letter-spacing: 0.1em;
+}
+
+/* ━━━━━ SCENE SECTION ━━━━━ */
+.scene {
+  margin-bottom: 96px;
+  padding-top: 32px;
+}
+.scene-head {
+  display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 32px;
+}
+.scene-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--text-tertiary);
+  letter-spacing: 0.25em; text-transform: uppercase;
+}
+.scene-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(22px, 2.8vw, 32px); font-weight: 500;
+  letter-spacing: 0.04em; line-height: 1.3;
+}
+.scene-decision {
+  margin-left: auto;
+  font-family: 'Noto Serif TC', serif; font-style: italic;
+  font-size: 14px; color: var(--accent-emergence);
+  max-width: 480px; text-align: right;
+}
+.scene-intro {
+  font-size: 14px; color: var(--text-secondary);
+  line-height: 1.85; margin-bottom: 32px; max-width: 820px;
+}
+
+/* ━━━━━ A/B GRID ━━━━━ */
+.ab-grid {
+  display: grid; gap: 1px;
+  grid-template-columns: 1fr 1fr;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+}
+@media (max-width: 900px) { .ab-grid { grid-template-columns: 1fr; } }
+.ab-col { background: var(--surface-canvas); padding: 28px; position: relative; }
+.ab-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  padding: 4px 10px; margin-bottom: 18px;
+  color: var(--accent-commitment); border: 1px solid var(--accent-commitment);
+}
+.ab-col.version-b .ab-tag { color: var(--accent-emergence); border-color: var(--accent-emergence); }
+.ab-name {
+  font-family: 'Noto Serif TC', serif; font-size: 17px;
+  color: var(--text-primary); margin-bottom: 6px; letter-spacing: 0.04em;
+}
+.ab-rationale {
+  font-size: 12px; color: var(--text-tertiary); line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+/* ━━━━━ SAMPLE FRAME (the actual visual sample) ━━━━━ */
+.sample {
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  position: relative;
+}
+.sample-label {
+  position: absolute; top: 8px; right: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  letter-spacing: 0.2em; color: var(--text-meta);
+  text-transform: uppercase;
+  background: rgba(27, 22, 18, 0.5);
+  padding: 2px 6px; z-index: 5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCENE 1 · EDITORIAL ARTICLE
+   Differentiator: body text warmth level
+   ═══════════════════════════════════════════════════════════════ */
+.ed-article {
+  background: var(--surface-canvas);
+  padding: 36px 32px;
+}
+.ed-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent-commitment); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.ed-kicker::before { content: ''; width: 20px; height: 1px; background: var(--accent-commitment); }
+.ed-title {
+  font-family: 'Noto Serif TC', serif; font-size: 26px;
+  font-weight: 500; letter-spacing: 0.02em; line-height: 1.3;
+  margin-bottom: 10px;
+}
+.ed-deck {
+  font-family: 'Noto Serif TC', serif; font-style: italic;
+  font-size: 14px; color: var(--accent-emergence);
+  margin-bottom: 20px;
+}
+.ed-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; color: var(--text-meta);
+  text-transform: uppercase;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 22px;
+}
+/* Version A: linen-primary body */
+.version-a .ed-body { color: var(--text-primary); }
+.version-a .ed-body-meta { color: var(--atom-stone-base); }
+/* Version B: stone-primary body */
+.version-b .ed-body { color: rgba(237, 228, 211, 0.75); }
+.version-b .ed-body-meta { color: var(--text-meta); }
+
+.ed-body { font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+.ed-body strong { color: var(--text-primary); font-weight: 500; }
+.version-b .ed-body strong { color: var(--accent-emergence); }
+.ed-pullquote {
+  font-family: 'Noto Serif TC', serif; font-size: 17px;
+  font-weight: 500; line-height: 1.55;
+  padding: 18px 0; margin: 20px 0;
+  border-top: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+  color: var(--accent-emergence);
+}
+.ed-body-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding-top: 18px; border-top: 1px solid var(--border-subtle);
+  display: flex; justify-content: space-between;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCENE 2 · DASHBOARD / CASE STUDY
+   Differentiator: accent color for data emphasis
+   ═══════════════════════════════════════════════════════════════ */
+.db-card {
+  background: var(--surface-canvas);
+  padding: 28px;
+  display: grid; gap: 24px;
+}
+.db-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle);
+}
+.db-client-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--text-meta);
+}
+.db-period {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; color: var(--text-tertiary);
+}
+.db-title {
+  font-family: 'Noto Serif TC', serif; font-size: 19px;
+  line-height: 1.4; letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+.db-metrics {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+}
+.db-metric {
+  background: var(--surface-elevated);
+  padding: 20px 18px;
+}
+.db-metric-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--text-meta); margin-bottom: 10px;
+}
+.db-metric-value {
+  font-family: 'Noto Serif TC', serif; font-size: 32px;
+  line-height: 1; font-weight: 500;
+  margin-bottom: 6px; letter-spacing: 0.02em;
+}
+/* Version A: brass emphasis */
+.version-a .db-metric-value { color: var(--accent-commitment); }
+.version-a .db-sparkline { stroke: var(--accent-commitment); }
+/* Version B: madder emphasis */
+.version-b .db-metric-value { color: var(--accent-conviction); }
+.version-b .db-sparkline { stroke: var(--accent-conviction); }
+
+.db-metric-delta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; color: var(--text-tertiary);
+}
+.db-sparkline { fill: none; stroke-width: 1.5; }
+.db-finding {
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-subtle);
+  font-size: 13px; line-height: 1.75;
+  color: var(--text-secondary);
+}
+.db-finding strong { color: var(--text-primary); font-weight: 500; }
+.db-cta-row {
+  display: flex; gap: 12px; margin-top: 4px;
+}
+.db-cta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 10px 18px; text-decoration: none; cursor: pointer;
+  transition: all 0.2s;
+}
+.db-cta.primary {
+  color: var(--surface-canvas); background: var(--accent-commitment);
+  border: 1px solid var(--accent-commitment);
+}
+.db-cta.primary:hover { background: var(--accent-emergence); border-color: var(--accent-emergence); }
+.db-cta.ghost {
+  color: var(--text-secondary); background: transparent;
+  border: 1px solid var(--border-default);
+}
+.db-cta.ghost:hover { color: var(--text-primary); border-color: var(--border-strong); }
+
+/* ═══════════════════════════════════════════════════════════════
+   SCENE 3 · PROPOSAL COVER
+   Differentiator: TC-led vs EN-kicker-led composition
+   ═══════════════════════════════════════════════════════════════ */
+.pc-cover {
+  background: var(--surface-canvas);
+  aspect-ratio: 3 / 4;
+  padding: 32px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.pc-topline {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--text-meta);
+  display: flex; justify-content: space-between;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: auto;
+}
+
+/* Version A: TC-dominant */
+.version-a .pc-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.3em; color: var(--accent-commitment);
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.version-a .pc-title {
+  font-family: 'Noto Serif TC', serif; font-size: clamp(28px, 5vw, 42px);
+  font-weight: 500; line-height: 1.2; letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.version-a .pc-sub {
+  font-family: 'Noto Serif TC', serif; font-style: italic;
+  font-size: 14px; color: var(--accent-emergence);
+  margin-bottom: 24px;
+}
+
+/* Version B: EN-kicker structured */
+.version-b .pc-kicker-block {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-default);
+}
+.version-b .pc-kicker-row {
+  display: flex; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.version-b .pc-kicker-row .k { color: var(--text-meta); }
+.version-b .pc-kicker-row .v { color: var(--text-primary); }
+.version-b .pc-title {
+  font-family: 'Noto Serif TC', serif; font-size: 24px;
+  font-weight: 500; line-height: 1.3; letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+.version-b .pc-sub {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 20px;
+}
+
+.pc-prepared {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--text-meta);
+  padding-top: 16px; border-top: 1px solid var(--border-subtle);
+  margin-top: auto;
+  display: flex; justify-content: space-between;
+}
+.pc-prepared strong { color: var(--text-secondary); font-weight: 500; }
+.pc-seal {
+  width: 32px; height: 32px;
+  border: 1px solid var(--accent-commitment);
+  position: absolute; top: 32px; right: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif TC', serif; font-size: 14px;
+  color: var(--accent-commitment);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCENE 4 · eDM
+   Differentiator: dark canvas vs linen canvas (Outlook-safe)
+   ═══════════════════════════════════════════════════════════════ */
+.edm {
+  max-width: 600px; margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+}
+/* Version A: dark canvas (brand-consistent) */
+.version-a .edm-container { background: var(--atom-ink-base); color: var(--atom-linen-base); }
+.version-a .edm-masthead { border-bottom: 1px solid var(--border-subtle); }
+.version-a .edm-body strong { color: var(--accent-emergence); }
+.version-a .edm-cta {
+  background: var(--accent-commitment); color: var(--atom-ink-base);
+}
+.version-a .edm-footer { color: rgba(237, 228, 211, 0.4); border-top: 1px solid var(--border-subtle); }
+
+/* Version B: linen canvas (Outlook-safe) */
+.version-b .edm-container { background: var(--atom-linen-base); color: var(--atom-ink-base); }
+.version-b .edm-masthead { border-bottom: 1px solid rgba(27, 22, 18, 0.1); }
+.version-b .edm-body strong { color: var(--atom-madder-base); }
+.version-b .edm-cta {
+  background: var(--atom-ink-base); color: var(--atom-linen-base);
+}
+.version-b .edm-footer { color: rgba(27, 22, 18, 0.5); border-top: 1px solid rgba(27, 22, 18, 0.1); }
+
+.edm-container { padding: 0; }
+.edm-masthead { padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
+.edm-mark {
+  font-family: 'Noto Serif TC', serif; font-size: 22px;
+  font-weight: 500; letter-spacing: 0.08em;
+}
+.edm-issue {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.65;
+}
+.edm-content { padding: 32px; }
+.edm-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  opacity: 0.65; margin-bottom: 14px;
+}
+.edm-title {
+  font-family: 'Noto Serif TC', serif; font-size: 22px;
+  font-weight: 500; line-height: 1.35; letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+.edm-body { font-size: 14px; line-height: 1.85; margin-bottom: 24px; }
+.edm-cta {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 12px 24px; text-decoration: none;
+}
+.edm-footer {
+  padding: 20px 32px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-align: center;
+}
+
+/* ━━━━━ TOKEN MAPPING TABLE ━━━━━ */
+.token-map {
+  margin-top: 32px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+}
+.token-map-head {
+  padding: 16px 22px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; justify-content: space-between;
+}
+.token-map-head .head-role { color: var(--accent-commitment); }
+.token-map-body { padding: 16px 22px; font-size: 12px; line-height: 1.9; }
+.token-row {
+  display: grid; grid-template-columns: 1.4fr 2fr 1fr; gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+.token-row:last-child { border-bottom: none; }
+.token-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-primary); letter-spacing: 0.05em;
+}
+.token-source {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--accent-emergence); letter-spacing: 0.05em;
+}
+.token-usage {
+  font-size: 11px; color: var(--text-tertiary); line-height: 1.55;
+}
+@media (max-width: 640px) {
+  .token-row { grid-template-columns: 1fr; gap: 2px; }
+  .token-usage { padding-left: 0; }
+}
+
+/* ━━━━━ FEEDBACK CTA ━━━━━ */
+.feedback {
+  margin-top: 64px; padding: 32px;
+  background: var(--surface-elevated); border: 1px solid var(--border-subtle);
+}
+.feedback h3 {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--accent-emergence); margin-bottom: 16px;
+}
+.feedback p {
+  font-size: 14px; color: var(--text-secondary); line-height: 1.85;
+  margin-bottom: 12px;
+}
+.feedback p strong { color: var(--text-primary); font-weight: 500; }
+.feedback ul {
+  list-style: none; font-size: 13px; color: var(--text-tertiary);
+  line-height: 2;
+}
+.feedback li { padding-left: 20px; position: relative; }
+.feedback li::before {
+  content: ''; position: absolute; left: 0; top: 14px;
+  width: 8px; height: 1px; background: var(--accent-commitment);
+}
+
+/* ━━━━━ FOOTER ━━━━━ */
+footer {
+  margin-top: 80px; padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-meta); text-align: center; line-height: 2;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ━━━━━━━━━ PAGE HEADER ━━━━━━━━━ -->
+  <header class="page-head">
+    <nav class="page-nav" aria-label="主要導覽">
+      <a href="/">← 返回主頁</a>
+      <a href="/roadmap">路線圖</a>
+    </nav>
+
+    <div class="page-kicker">Phase B · Tokens in Context</div>
+    <h1 class="page-title">承器 Tokens, 活在真實介面裡</h1>
+    <div class="page-sub">四個情境 · 八組對比 · 從色票走到應用</div>
+
+    <p class="page-desc">
+      色票脫離應用情境時，很難判斷對錯。這一頁用四個真實情境——<strong>editorial 長文、case study 卡片、提案封面、eDM</strong>——各自做一組 A/B 對比，讓每一個 semantic token 的選擇都有可檢視的張力。每組對比的兩個版本都成立，差在氣質取捨。
+    </p>
+
+    <div class="reading-guide">
+      <h3>閱讀方式</h3>
+      <ol>
+        <li>每個情境都有「對比的核心選擇」——那是真正要你決策的地方，其他細節都是陪襯。</li>
+        <li>A / B 兩個樣張內容相同、semantic token 配置不同。先看整體感覺，不要放大看細節。</li>
+        <li>樣張下方的 <strong>Token Mapping</strong> 表格，列出這個版本用了哪些 semantic token。</li>
+        <li>回饋時請指「scene N, version A 的 xxx」——我能精準對到要調的 token。</li>
+      </ol>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCENE 1 · EDITORIAL ARTICLE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="scene" id="scene-1">
+    <div class="scene-head">
+      <span class="scene-num">Scene 01</span>
+      <h2 class="scene-title">Editorial Article · 思想領導長文</h2>
+      <div class="scene-decision">內文文字該用哪種暖度？<br>高明度醒目 vs 中明度雜誌級</div>
+    </div>
+    <p class="scene-intro">
+      這是承器最核心的使用場景——NarraTect 思想領導、個人評論、顧問交付物的敘事段落。對比的核心：<strong>body text 用 linen 主體（高對比、眼睛快速抓取）還是 stone 漂移（中對比、雜誌級氣質、讀者慢下來）</strong>。不是哪個好，是想召喚什麼閱讀節奏。
+    </p>
+
+    <div class="ab-grid">
+      <!-- A: Linen-primary body -->
+      <div class="ab-col version-a">
+        <span class="ab-tag">Version A</span>
+        <div class="ab-name">亞麻白主體</div>
+        <p class="ab-rationale">高對比閱讀體感。適合 LinkedIn 文章、email 長文、想被快速掃讀的內容。</p>
+
+        <div class="sample">
+          <span class="sample-label">desktop sample</span>
+          <article class="ed-article">
+            <div class="ed-kicker">Essay · No. 07</div>
+            <h1 class="ed-title">合規不是框架表格，是組織選擇留下的痕跡</h1>
+            <p class="ed-deck">當我們把 B4SI、IFRS、ESRS 放進同一張 spreadsheet 時，其實是在做選擇。</p>
+            <div class="ed-meta">Rockie Lin · 2026.04 · Reading time 9 min</div>
+            <p class="ed-body">
+              十年前我剛進入永續領域時，合規文件是一疊厚厚的 PDF，裡頭塞滿 boilerplate。十年後仍是同一疊 PDF，只是換成更多縮寫。但如果只看合規，我們看不到組織為什麼要這樣做、為了誰、留下什麼。
+            </p>
+            <blockquote class="ed-pullquote">
+              合規不該是框架的堆疊，而是組織選擇的痕跡——留給下一個十年的線索。
+            </blockquote>
+            <p class="ed-body">
+              <strong>IRIS+ 的指標不是為了填表</strong>，是為了讓投資人能問更好的問題。IMP 的五維度不是方法論，是讓影響力可被辯論。當我們把這些框架降格為 spreadsheet，我們其實是在拒絕組織的真實性。
+            </p>
+            <div class="ed-body-meta">
+              <span>承器 · Editorial</span>
+              <span>No. 07 / 2026</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">ink.base #1B1612</span><span class="token-usage">內文背景</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base #EDE4D3</span><span class="token-usage">主體內文（高對比 14:1）</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">stone.base #8B7E6B</span><span class="token-usage">附註、發佈資訊</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">brass.base #B8893F</span><span class="token-usage">kicker rule + kicker 文字</span></div>
+            <div class="token-row"><span class="token-role">accent.emergence</span><span class="token-source">dawn.base #D9BC7A</span><span class="token-usage">副標、引言、重點 strong</span></div>
+            <div class="token-row"><span class="token-role">border.default</span><span class="token-source">linen 18% on ink</span><span class="token-usage">引文上下橫線</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Stone-primary body -->
+      <div class="ab-col version-b">
+        <span class="ab-tag">Version B</span>
+        <div class="ab-name">Stone 漂移</div>
+        <p class="ab-rationale">中明度雜誌級氣質。適合長篇深度文章、editorial journal、希望讀者慢下來的內容。</p>
+
+        <div class="sample">
+          <span class="sample-label">desktop sample</span>
+          <article class="ed-article">
+            <div class="ed-kicker">Essay · No. 07</div>
+            <h1 class="ed-title">合規不是框架表格，是組織選擇留下的痕跡</h1>
+            <p class="ed-deck">當我們把 B4SI、IFRS、ESRS 放進同一張 spreadsheet 時，其實是在做選擇。</p>
+            <div class="ed-meta">Rockie Lin · 2026.04 · Reading time 9 min</div>
+            <p class="ed-body">
+              十年前我剛進入永續領域時，合規文件是一疊厚厚的 PDF，裡頭塞滿 boilerplate。十年後仍是同一疊 PDF，只是換成更多縮寫。但如果只看合規，我們看不到組織為什麼要這樣做、為了誰、留下什麼。
+            </p>
+            <blockquote class="ed-pullquote">
+              合規不該是框架的堆疊，而是組織選擇的痕跡——留給下一個十年的線索。
+            </blockquote>
+            <p class="ed-body">
+              <strong>IRIS+ 的指標不是為了填表</strong>，是為了讓投資人能問更好的問題。IMP 的五維度不是方法論，是讓影響力可被辯論。當我們把這些框架降格為 spreadsheet，我們其實是在拒絕組織的真實性。
+            </p>
+            <div class="ed-body-meta">
+              <span>承器 · Editorial</span>
+              <span>No. 07 / 2026</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">ink.base #1B1612</span><span class="token-usage">內文背景</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen 75% on ink</span><span class="token-usage">主體內文（雜誌級對比 10:1）</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 35% on ink</span><span class="token-usage">附註、發佈資訊</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">brass.base #B8893F</span><span class="token-usage">kicker rule + kicker 文字</span></div>
+            <div class="token-row"><span class="token-role">accent.emergence</span><span class="token-source">dawn.base #D9BC7A</span><span class="token-usage">副標、引言、重點 strong</span></div>
+            <div class="token-row"><span class="token-role">border.default</span><span class="token-source">linen 18% on ink</span><span class="token-usage">引文上下橫線</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCENE 2 · DASHBOARD / CASE STUDY
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="scene" id="scene-2">
+    <div class="scene-head">
+      <span class="scene-num">Scene 02</span>
+      <h2 class="scene-title">Case Study Card · 顧問案例數據</h2>
+      <div class="scene-decision">數據強調用哪一色？<br>Brass 長期承諾 vs Madder 當下張力</div>
+    </div>
+    <p class="scene-intro">
+      顧問案例的核心數字——ROI、時程、採用率——應該承載什麼情緒？<strong>銅璽</strong>代表長期價值、穩定趨勢、已兌現的承諾；<strong>茜紅</strong>代表需要此刻決策的張力、轉折點的迫切、conviction。同樣的數字，染兩種色調，讀起來是兩種案例。
+    </p>
+
+    <div class="ab-grid">
+      <!-- A: Brass emphasis -->
+      <div class="ab-col version-a">
+        <span class="ab-tag">Version A</span>
+        <div class="ab-name">Brass 長期承諾</div>
+        <p class="ab-rationale">銅璽染色適合已實現的成果、長期 ROI、續約案例。氣質：穩定、已然、值得信賴。</p>
+
+        <div class="sample">
+          <span class="sample-label">case study card</span>
+          <div class="db-card">
+            <div class="db-header">
+              <div>
+                <div class="db-client-kicker">Client · Asia-Pacific Bank</div>
+                <div class="db-title">合規文化轉型 · 三年後的組織痕跡</div>
+              </div>
+              <div class="db-period">2023 — 2026</div>
+            </div>
+
+            <div class="db-metrics">
+              <div class="db-metric">
+                <div class="db-metric-label">Adoption Rate</div>
+                <div class="db-metric-value">87%</div>
+                <div class="db-metric-delta">+34 pts YoY</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,16 20,13 40,11 60,7 80,5 100,3"></polyline>
+                </svg>
+              </div>
+              <div class="db-metric">
+                <div class="db-metric-label">Retention</div>
+                <div class="db-metric-value">94%</div>
+                <div class="db-metric-delta">36-month avg.</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,8 25,7 50,6 75,5 100,4"></polyline>
+                </svg>
+              </div>
+              <div class="db-metric">
+                <div class="db-metric-label">NPS Shift</div>
+                <div class="db-metric-value">+42</div>
+                <div class="db-metric-delta">baseline +12 → now +54</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,15 30,12 60,8 100,3"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div class="db-finding">
+              <strong>關鍵發現：</strong>文化轉型的複利效應在第 18 個月開始顯現。這份資料不是用來證明我們的方法，是用來邀請下一家希望做三年計畫的客戶。
+            </div>
+
+            <div class="db-cta-row">
+              <a href="#" class="db-cta primary">閱讀完整案例</a>
+              <a href="#" class="db-cta ghost">下載 PDF</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.elevated</span><span class="token-source">ink.10 #221C17</span><span class="token-usage">Metric 卡片背景</span></div>
+            <div class="token-row"><span class="token-role">data.emphasis</span><span class="token-source">brass.base #B8893F</span><span class="token-usage">數值、sparkline、主 CTA</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base</span><span class="token-usage">標題、強調文字</span></div>
+            <div class="token-row"><span class="token-role">text.secondary</span><span class="token-source">linen 70%</span><span class="token-usage">發現段文字</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 35%</span><span class="token-usage">Client kicker、期間標示</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Madder emphasis -->
+      <div class="ab-col version-b">
+        <span class="ab-tag">Version B</span>
+        <div class="ab-name">Madder 當下張力</div>
+        <p class="ab-rationale">茜紅染色適合需要此刻做決策的案例、轉折點數據、conviction 時刻。氣質：緊迫、立場、決斷。</p>
+
+        <div class="sample">
+          <span class="sample-label">case study card</span>
+          <div class="db-card">
+            <div class="db-header">
+              <div>
+                <div class="db-client-kicker">Client · Asia-Pacific Bank</div>
+                <div class="db-title">合規文化轉型 · 三年後的組織痕跡</div>
+              </div>
+              <div class="db-period">2023 — 2026</div>
+            </div>
+
+            <div class="db-metrics">
+              <div class="db-metric">
+                <div class="db-metric-label">Adoption Rate</div>
+                <div class="db-metric-value">87%</div>
+                <div class="db-metric-delta">+34 pts YoY</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,16 20,13 40,11 60,7 80,5 100,3"></polyline>
+                </svg>
+              </div>
+              <div class="db-metric">
+                <div class="db-metric-label">Retention</div>
+                <div class="db-metric-value">94%</div>
+                <div class="db-metric-delta">36-month avg.</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,8 25,7 50,6 75,5 100,4"></polyline>
+                </svg>
+              </div>
+              <div class="db-metric">
+                <div class="db-metric-label">NPS Shift</div>
+                <div class="db-metric-value">+42</div>
+                <div class="db-metric-delta">baseline +12 → now +54</div>
+                <svg viewBox="0 0 100 20" style="width:100%;height:20px;margin-top:6px;" aria-hidden="true">
+                  <polyline class="db-sparkline" points="0,15 30,12 60,8 100,3"></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div class="db-finding">
+              <strong>關鍵發現：</strong>文化轉型的複利效應在第 18 個月開始顯現。這份資料不是用來證明我們的方法，是用來邀請下一家希望做三年計畫的客戶。
+            </div>
+
+            <div class="db-cta-row">
+              <a href="#" class="db-cta primary">閱讀完整案例</a>
+              <a href="#" class="db-cta ghost">下載 PDF</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.elevated</span><span class="token-source">ink.10 #221C17</span><span class="token-usage">Metric 卡片背景</span></div>
+            <div class="token-row"><span class="token-role">data.emphasis</span><span class="token-source">madder.base #9B3831</span><span class="token-usage">數值、sparkline（主 CTA 仍用 brass 維持承諾感）</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base</span><span class="token-usage">標題、強調文字</span></div>
+            <div class="token-row"><span class="token-role">text.secondary</span><span class="token-source">linen 70%</span><span class="token-usage">發現段文字</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 35%</span><span class="token-usage">Client kicker、期間標示</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCENE 3 · PROPOSAL COVER
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="scene" id="scene-3">
+    <div class="scene-head">
+      <span class="scene-num">Scene 03</span>
+      <h2 class="scene-title">Proposal Cover · NarraTect 提案封面</h2>
+      <div class="scene-decision">封面視覺重心在哪裡？<br>TC 標題巨大 vs EN kicker 結構化</div>
+    </div>
+    <p class="scene-intro">
+      提案封面的第一眼決定後續閱讀的節奏。<strong>A 版</strong>走中文辭氣，承器字體巨大、EN 作 kicker 陪襯，氣質像東方雜誌封面；<strong>B 版</strong>走結構化 metadata，EN kicker 成排、TC 標題中型，氣質像 McKinsey 提案。兩者訊息相同，語感截然不同。
+    </p>
+
+    <div class="ab-grid">
+      <!-- A: TC-dominant -->
+      <div class="ab-col version-a">
+        <span class="ab-tag">Version A</span>
+        <div class="ab-name">TC 主導</div>
+        <p class="ab-rationale">東方雜誌氣質。適合個人品牌強的提案、思想領導型文件、客戶看重「誰在做」大過「什麼公司在做」。</p>
+
+        <div class="sample">
+          <span class="sample-label">proposal cover · 3:4</span>
+          <div class="pc-cover">
+            <div class="pc-seal">承</div>
+            <div class="pc-topline">
+              <span>NarraTect Advisory</span>
+              <span>Confidential · Draft v1</span>
+            </div>
+
+            <div>
+              <div class="pc-kicker">Proposal · Cultural Transformation</div>
+              <h1 class="pc-title">當組織需要<br>一個新的敘事</h1>
+              <p class="pc-sub">A Three-Year Narrative Framework for Post-Merger Identity</p>
+            </div>
+
+            <div class="pc-prepared">
+              <span>Prepared for <strong>[Client Name]</strong></span>
+              <span>2026.04</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">ink.base</span><span class="token-usage">封面底色</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base</span><span class="token-usage">TC 主標（最大字）</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">brass.base</span><span class="token-usage">kicker 文字 + 印章</span></div>
+            <div class="token-row"><span class="token-role">accent.emergence</span><span class="token-source">dawn.base</span><span class="token-usage">italic 副標</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 35%</span><span class="token-usage">topline、prepared for</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: EN-kicker structured -->
+      <div class="ab-col version-b">
+        <span class="ab-tag">Version B</span>
+        <div class="ab-name">Kicker 主導</div>
+        <p class="ab-rationale">結構化 metadata 氣質。適合傳統顧問業客戶、需要快速 parse 文件類別的大型企業、專案管理密集的提案流程。</p>
+
+        <div class="sample">
+          <span class="sample-label">proposal cover · 3:4</span>
+          <div class="pc-cover">
+            <div class="pc-seal">承</div>
+            <div class="pc-topline">
+              <span>NarraTect Advisory</span>
+              <span>Confidential · Draft v1</span>
+            </div>
+
+            <div>
+              <div class="pc-kicker-block">
+                <div class="pc-kicker-row"><span class="k">Type</span><span class="v">Strategic Proposal</span></div>
+                <div class="pc-kicker-row"><span class="k">Engagement</span><span class="v">Cultural Transformation</span></div>
+                <div class="pc-kicker-row"><span class="k">Duration</span><span class="v">3-year roadmap</span></div>
+                <div class="pc-kicker-row"><span class="k">Investment</span><span class="v">On request</span></div>
+              </div>
+              <h1 class="pc-title">當組織需要<br>一個新的敘事</h1>
+              <p class="pc-sub">A three-year narrative framework designed for post-merger identity integration, with phased milestones and board-level check-ins.</p>
+            </div>
+
+            <div class="pc-prepared">
+              <span>Prepared for <strong>[Client Name]</strong></span>
+              <span>2026.04</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">ink.base</span><span class="token-usage">封面底色</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base</span><span class="token-usage">TC 標題 + kicker 值</span></div>
+            <div class="token-row"><span class="token-role">text.secondary</span><span class="token-source">linen 70%</span><span class="token-usage">副標敘述</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">brass.base</span><span class="token-usage">印章</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 35%</span><span class="token-usage">kicker 標籤、topline</span></div>
+            <div class="token-row"><span class="token-role">border.default</span><span class="token-source">linen 18%</span><span class="token-usage">kicker block 底線</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCENE 4 · eDM (email newsletter)
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="scene" id="scene-4">
+    <div class="scene-head">
+      <span class="scene-num">Scene 04</span>
+      <h2 class="scene-title">eDM · 電子報</h2>
+      <div class="scene-decision">底色選哪個？<br>墨玄品牌一致 vs 亞麻白 Outlook 相容</div>
+    </div>
+    <p class="scene-intro">
+      eDM 是所有情境裡最棘手的——<strong>A 版</strong>堅持夜色，品牌氣質完整但 Outlook 會把深色覆蓋成白底（部分客戶端）；<strong>B 版</strong>改走亞麻白底，失去夜色氣質但跨客戶端一致性最高。真實選擇往往不是 A 或 B，而是<em>什麼場合走哪一套</em>——這組對比會幫你看到取捨本身。
+    </p>
+
+    <div class="ab-grid">
+      <!-- A: Dark canvas -->
+      <div class="ab-col version-a">
+        <span class="ab-tag">Version A</span>
+        <div class="ab-name">Dark canvas</div>
+        <p class="ab-rationale">夜色底，與主站品牌完全一致。最適合：自有訂閱清單、讀者都是 Gmail/Apple Mail 用戶、高端顧問客戶訂閱制。</p>
+
+        <div class="sample">
+          <span class="sample-label">email · 600px max</span>
+          <div class="edm">
+            <div class="edm-container">
+              <div class="edm-masthead">
+                <div class="edm-mark">承器</div>
+                <div class="edm-issue">No. 07 · 2026.04</div>
+              </div>
+              <div class="edm-content">
+                <div class="edm-kicker">Essay · Monthly</div>
+                <h2 class="edm-title">合規不是框架表格，<br>是組織選擇留下的痕跡</h2>
+                <p class="edm-body">
+                  十年前我剛進入永續領域時，合規文件是一疊厚厚的 PDF，裡頭塞滿 boilerplate。十年後仍是同一疊 PDF，只是換成更多縮寫。<strong>但如果只看合規，我們看不到組織為什麼要這樣做、為了誰、留下什麼。</strong>
+                </p>
+                <a href="#" class="edm-cta">繼續閱讀全文 →</a>
+              </div>
+              <div class="edm-footer">
+                NarraTect Advisory · unsubscribe · preferences
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">ink.base</span><span class="token-usage">郵件底色</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">linen.base</span><span class="token-usage">主文字</span></div>
+            <div class="token-row"><span class="token-role">accent.emergence</span><span class="token-source">dawn.base</span><span class="token-usage">strong 強調</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">brass.base</span><span class="token-usage">CTA 按鈕底色</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">linen 40%</span><span class="token-usage">footer</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: Linen canvas (Outlook-safe) -->
+      <div class="ab-col version-b">
+        <span class="ab-tag">Version B</span>
+        <div class="ab-name">Linen canvas（Outlook-safe）</div>
+        <p class="ab-rationale">亞麻白底，跨客戶端一致性最高。最適合：大型組織訂閱清單、混合客戶端、TSMC 內部 GSM 電子報、不確定讀者環境的場合。</p>
+
+        <div class="sample">
+          <span class="sample-label">email · 600px max</span>
+          <div class="edm">
+            <div class="edm-container">
+              <div class="edm-masthead">
+                <div class="edm-mark">承器</div>
+                <div class="edm-issue">No. 07 · 2026.04</div>
+              </div>
+              <div class="edm-content">
+                <div class="edm-kicker">Essay · Monthly</div>
+                <h2 class="edm-title">合規不是框架表格，<br>是組織選擇留下的痕跡</h2>
+                <p class="edm-body">
+                  十年前我剛進入永續領域時，合規文件是一疊厚厚的 PDF，裡頭塞滿 boilerplate。十年後仍是同一疊 PDF，只是換成更多縮寫。<strong>但如果只看合規，我們看不到組織為什麼要這樣做、為了誰、留下什麼。</strong>
+                </p>
+                <a href="#" class="edm-cta">繼續閱讀全文 →</a>
+              </div>
+              <div class="edm-footer">
+                NarraTect Advisory · unsubscribe · preferences
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="token-map">
+          <div class="token-map-head"><span class="head-role">SEMANTIC ROLE</span><span>→ ATOMIC SOURCE</span></div>
+          <div class="token-map-body">
+            <div class="token-row"><span class="token-role">surface.canvas</span><span class="token-source">linen.base</span><span class="token-usage">郵件底色</span></div>
+            <div class="token-row"><span class="token-role">text.primary</span><span class="token-source">ink.base</span><span class="token-usage">主文字</span></div>
+            <div class="token-row"><span class="token-role">accent.emergence</span><span class="token-source">madder.base</span><span class="token-usage">strong 強調（亮底時 dawn 太淡，改用 madder）</span></div>
+            <div class="token-row"><span class="token-role">accent.commitment</span><span class="token-source">ink.base on linen</span><span class="token-usage">CTA（深底白字反轉，brass 在亮底會失焦）</span></div>
+            <div class="token-row"><span class="token-role">text.meta</span><span class="token-source">ink 50%</span><span class="token-usage">footer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━ FEEDBACK PROMPT ━━━━━ -->
+  <section class="feedback">
+    <h3>回饋方式</h3>
+    <p>看完四個情境八組樣張後，建議你用以下方式告訴我要調整什麼：</p>
+    <ul>
+      <li><strong>整體感：</strong>某個情境的 A 或 B 更接近承器，另一個不對勁（請說哪裡不對勁）</li>
+      <li><strong>特定元素：</strong>例如「scene 02A 的數字太暗，需要更亮」、「scene 03B 的 kicker 間距太密」</li>
+      <li><strong>缺失情境：</strong>還有什麼真實使用場景是這四個沒涵蓋但你會用到的</li>
+      <li><strong>Token 層決策：</strong>看完覺得 semantic token 的分類不夠用、或有冗餘</li>
+    </ul>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>承器 · Color Tokens · Phase B Preview · v0.1</div>
+    <div>© 2026 NarraTect Advisory. All rights reserved.</div>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -9,6 +9,12 @@
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
         { "key": "Cache-Control", "value": "private, no-cache, no-store, must-revalidate" }
       ]
+    },
+    {
+      "source": "/tokens",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
     }
   ]
 }
